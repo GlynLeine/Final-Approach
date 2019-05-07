@@ -22,8 +22,8 @@ namespace GLXEngine
         {
             if(m_bounds != null)
             {
-                m_bounds.width = a_width;
-                m_bounds.height = a_height;
+                m_bounds.m_width = a_width;
+                m_bounds.m_height = a_height;
             }
             else
                 m_bounds = new Rectangle(0, 0, a_width, a_height);
@@ -39,12 +39,12 @@ namespace GLXEngine
         {
             get
             {
-                if (m_bounds != null) return m_bounds.width * scaleX;
+                if (m_bounds != null) return m_bounds.m_width * scaleX;
                 return 0;
             }
             set
             {
-                if (m_bounds != null && m_bounds.width != 0) scaleX = value / m_bounds.width;
+                if (m_bounds != null && m_bounds.m_width != 0) scaleX = value / m_bounds.m_width;
             }
         }
 
@@ -58,12 +58,12 @@ namespace GLXEngine
         {
             get
             {
-                if (m_bounds != null) return m_bounds.height * scaleY;
+                if (m_bounds != null) return m_bounds.m_height * scaleY;
                 return 0;
             }
             set
             {
-                if (m_bounds != null && m_bounds.height != 0) scaleY = value / m_bounds.height;
+                if (m_bounds != null && m_bounds.m_height != 0) scaleY = value / m_bounds.m_height;
             }
         }
 

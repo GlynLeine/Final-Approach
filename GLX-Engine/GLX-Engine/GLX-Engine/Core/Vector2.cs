@@ -88,10 +88,12 @@ namespace GLXEngine.Core
         //------------------------------------------------------------------------------------------------------------------------
         public float Dot(Vector2 b)                         {   return x * b.x + y * b.y;       }
         public static float Distance(Vector2 a, Vector2 b)  {   return Abs((a - b).magnitude);  }
+        public static Vector2 Clamp(Vector2 a_source, Vector2 a_min, Vector2 a_max)  {   return new Vector2(Mathf.Clamp(a_source.x, a_min.x, a_max.x), Mathf.Clamp(a_source.y, a_min.y, a_max.y)); }
         public Vector2 Normalize()                          {   return this /= magnitude;       }
-        public Vector2 SetMagnitude(float a_newMag)         {   this.magnitude = a_newMag; return this; }
-        public Vector2 SetAngle(float a_newAngle)           {   this.angle = a_newAngle; return this; }
-        public float Dist(Vector2 a_other)                  {   return Abs((this-a_other).magnitude); }
+        public Vector2 SetMagnitude(float a_newMag)         {   magnitude = a_newMag; return this; }
+        public Vector2 SetAngle(float a_newAngle)           {   angle = a_newAngle; return this; }
+        public Vector2 Clamp(Vector2 a_min, Vector2 a_max)  {   x = Mathf.Clamp(x, a_min.x, a_max.x); y = Mathf.Clamp(y, a_min.y, a_max.y); return this; }
+        public float Distance(Vector2 b)                    {   return Abs((this-b).magnitude); }
 
         public override bool Equals(object obj)
         {

@@ -20,6 +20,7 @@ namespace GameProject
         public DeathScreen deathScreen;
         public StartScreen startScreen;
 
+
         public int score = 0;
 
         public Program() : base(1280, 720, false)        // Create a window that's 800x600 and NOT fullscreen

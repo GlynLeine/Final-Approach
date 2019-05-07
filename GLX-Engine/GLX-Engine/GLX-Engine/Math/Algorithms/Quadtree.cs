@@ -77,8 +77,8 @@ namespace GLXEngine
 
         public void SubDivide()
         {
-            float w = m_boundary.width / 2;
-            float h = m_boundary.height / 2;
+            float w = m_boundary.m_width / 2;
+            float h = m_boundary.m_height / 2;
             float x = m_boundary.x;
             float y = m_boundary.y;
 
