@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Reflection;
+
 
 namespace GLXEngine.Core
 {
     public class Circle : Shape
     {
         public float radius;
-
         //------------------------------------------------------------------------------------------------------------------------
         //														Rectangle()
         //------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +25,27 @@ namespace GLXEngine.Core
             return Vector2.Distance(position, a_point) <= radius;
         }
 
-        public override bool Overlaps(Rectangle a_other)
+        public override bool Overlaps(Shape a_other)
+        {
+            Type otherType = a_other.GetType();
+            if(otherType.IsAssignableFrom(typeof(Circle)))
+            {
+                return Overlaps(a_other as Circle);
+            }
+            return false;
+        }
+
+        public bool Overlaps(Line a_other)
+        {
+            return false;
+        }
+
+        public bool Overlaps(Circle a_other)
+        {
+            return position.Dist(a_other.position) < radius + a_other.radius;
+        }
+
+        public bool Overlaps(Rectangle a_other)
         {
             float xDist = Mathf.Abs(a_other.x - x);
             float yDist = Mathf.Abs(a_other.y - y);

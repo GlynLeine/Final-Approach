@@ -1,10 +1,12 @@
-using System;
+using System.Collections.Generic;
 
 namespace GLXEngine.Core
 {
 	public class Collider
 	{
         public Vector2 m_minimumTranslationVec = new Vector2();
+
+        public List<Collider> m_children = new List<Collider>();
 
 		public Collider ()
 		{

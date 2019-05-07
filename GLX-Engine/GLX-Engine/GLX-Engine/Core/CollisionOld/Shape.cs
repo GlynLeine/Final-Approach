@@ -10,6 +10,6 @@ namespace GLXEngine.Core
 
         public abstract bool Contains(Vector2 a_point);
 
-        public abstract bool Overlaps(Rectangle a_other);
+        public abstract bool Overlaps(Shape a_other);
     }
 }

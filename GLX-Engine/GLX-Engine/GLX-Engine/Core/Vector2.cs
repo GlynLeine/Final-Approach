@@ -91,6 +91,7 @@ namespace GLXEngine.Core
         public Vector2 Normalize()                          {   return this /= magnitude;       }
         public Vector2 SetMagnitude(float a_newMag)         {   this.magnitude = a_newMag; return this; }
         public Vector2 SetAngle(float a_newAngle)           {   this.angle = a_newAngle; return this; }
+        public float Dist(Vector2 a_other)                  {   return Abs((this-a_other).magnitude); }
 
         public override bool Equals(object obj)
         {

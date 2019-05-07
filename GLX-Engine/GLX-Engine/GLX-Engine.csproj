@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GLX-Engine\Core\CollisionOld\Line.cs" />
     <Compile Include="GLX-Engine\Input\ArduinoInterface.cs" />
     <Compile Include="GLX-Engine\Math\Algorithms\Boid.cs" />
     <Compile Include="GLX-Engine\Math\Algorithms\CollisionAlgorithms.cs" />
@@ -75,8 +76,8 @@
     <Compile Include="GLX-Engine\Rendering\Renderables\Canvas.cs" />
     <Compile Include="GLX-Engine\ECS\BasicComponents.cs" />
     <Compile Include="GLX-Engine\Input\Controller.cs" />
-    <Compile Include="GLX-Engine\Core\Circle.cs" />
-    <Compile Include="GLX-Engine\Core\Shape.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\Circle.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\Shape.cs" />
     <Compile Include="GLX-Engine\ECS\ECS.cs" />
     <Compile Include="GLX-Engine\ECS\ComponentHandle.cs" />
     <Compile Include="GLX-Engine\ECS\Entity.cs" />
@@ -92,10 +93,10 @@
     <Compile Include="GLX-Engine\Audio\SoundChannel.cs" />
     <Compile Include="GLX-Engine\Rendering\Renderables\Sprite.cs" />
     <Compile Include="GLX-Engine\Core\BlendMode.cs" />
-    <Compile Include="GLX-Engine\Core\BoxCollider.cs" />
-    <Compile Include="GLX-Engine\Core\Collider.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\BoxCollider.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\Collider.cs" />
     <Compile Include="GLX-Engine\Rendering\RenderCore\GLContext.cs" />
-    <Compile Include="GLX-Engine\Core\Rectangle.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\Rectangle.cs" />
     <Compile Include="GLX-Engine\Core\Texture2D.cs" />
     <Compile Include="GLX-Engine\Core\Transformable.cs" />
     <Compile Include="GLX-Engine\Core\Vector2.cs" />
