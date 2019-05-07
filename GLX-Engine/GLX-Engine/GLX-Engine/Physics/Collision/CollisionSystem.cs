@@ -76,7 +76,7 @@ namespace GLXEngine.Collision
 
                                         if(collisionComponent.m_usePhysics)
                                         {
-                                            m_owner.
+                                            //m_owner.
                                         }
 
                                         if(otherCollisionComponent.m_usePhysics)

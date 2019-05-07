@@ -4,22 +4,38 @@ namespace GLXEngine.Core
 {
     public class Line : Shape
     {
-        float m_angle;
-        float m_length;
+        public float m_angle;
+        public float m_length;
 
-        Vector2 start
+        public Vector2 start
         {
             get
             {
-                return null;
+                Vector2 halfLine = new Vector2(m_angle) * (m_length*0.5f);
+                return position - halfLine;
+            }
+
+            set
+            {
+                Vector2 halfLine = value - position;
+                m_length = halfLine.magnitude*2f;
+                m_angle = halfLine.angle;
             }
         }
 
-        Vector2 end
+        public Vector2 end
         {
             get
             {
-                return null;
+                Vector2 halfLine = new Vector2(m_angle) * (m_length*0.5f);
+                return position + halfLine;
+            }
+
+            set
+            {
+                Vector2 halfLine = position - value;
+                m_length = halfLine.magnitude*2f;
+                m_angle = halfLine.angle;
             }
         }
 

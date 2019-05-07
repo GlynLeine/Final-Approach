@@ -22,7 +22,7 @@ namespace GameProject
 
         public int score = 0;
 
-        public Program() : base(1280, 720, true)        // Create a window that's 800x600 and NOT fullscreen
+        public Program() : base(1280, 720, false)        // Create a window that's 800x600 and NOT fullscreen
         {
             GLContext.clearColor = Color.FromArgb(109, 106, 106);
 

@@ -37,6 +37,11 @@ namespace GLXEngine.Core
 
         public bool Overlaps(Line a_other)
         {
+            position -= a_other.start;
+            position.angle -= a_other.m_angle;
+
+
+
             return false;
         }
 

@@ -38,7 +38,17 @@ namespace GLXEngine.Core
             return a_point.x >= left && a_point.x <= right && a_point.y >= top && a_point.y <= bottom;
         }
 
-        public override bool Overlaps(Rectangle a_other)
+        public override bool Overlaps(Shape a_other)
+        {
+            Type otherType = a_other.GetType();
+            if(otherType.IsAssignableFrom(typeof(Rectangle)))
+            {
+                return Overlaps(a_other as Rectangle);
+            }
+            return false;
+        }
+
+        public bool Overlaps(Rectangle a_other)
         {
             return !(a_other.left > right || a_other.right < left || a_other.bottom < top || a_other.top > bottom);
         }
