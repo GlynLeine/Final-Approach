@@ -79,7 +79,7 @@ namespace GLXEngine
 			
 			_frameWidth = 1.0f / (float)cols;
 			_frameHeight = 1.0f / (float)rows;
-			m_bounds = new Rectangle(0, 0, _texture.width * _frameWidth, _texture.height * _frameHeight);
+			m_bounds = new AARectangle(0, 0, _texture.width * _frameWidth, _texture.height * _frameHeight);
 			
 			_currentFrame = -1;
 			SetFrame(0);

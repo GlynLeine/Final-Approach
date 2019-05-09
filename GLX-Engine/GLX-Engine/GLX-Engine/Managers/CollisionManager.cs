@@ -38,7 +38,7 @@ namespace GLXEngine
         //------------------------------------------------------------------------------------------------------------------------
         //														CollisionManager()
         //------------------------------------------------------------------------------------------------------------------------
-        public CollisionManager(Rectangle a_bounds, int a_cellCapacity = 4)
+        public CollisionManager(AARectangle a_bounds, int a_cellCapacity = 4)
         {
             m_colliderTree = new QuadTree(a_bounds, a_cellCapacity);
         }
@@ -119,7 +119,7 @@ namespace GLXEngine
             return new Circle(position.x, position.y, 500);
         }
 
-        private Rectangle BroadPhaseRectangle(GameObject gameObject)
+        private AARectangle BroadPhaseRectangle(GameObject gameObject)
         {
             Vector2 position = gameObject.screenPosition;
             Vector2[] hullA = (gameObject.collider as BoxCollider).m_owner.GetHull();
@@ -141,7 +141,7 @@ namespace GLXEngine
 
             Vector2 center = position - velocityA * deltaTime * 0.5f;
 
-            return new Rectangle(position.x - 50, position.y - 50, 100, 100);
+            return new AARectangle(position.x, position.y, 100, 100);
         }
 
         //------------------------------------------------------------------------------------------------------------------------

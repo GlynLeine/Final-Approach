@@ -6,7 +6,7 @@ namespace GLXEngine
 {
     static class CollisionAlgorithms
     {
-        public static Rectangle CalcBroadphaseAreaComplex(Vector2 a_position, Vector2 a_prevPosition, ComplexCollisionShape a_shape)
+        public static AARectangle CalcBroadphaseAreaComplex(Vector2 a_position, Vector2 a_prevPosition, ComplexCollisionShape a_shape)
         {
             Vector2[] hullA = a_shape.m_points.ToArray();
 
@@ -27,10 +27,10 @@ namespace GLXEngine
 
             Vector2 center = a_position - velocityA * deltaTime * 0.5f;
 
-            return new Rectangle(a_position.x - 50, a_position.y - 50, 100, 100);
+            return new AARectangle(a_position.x - 50, a_position.y - 50, 100, 100);
         }
 
-        public static Rectangle CalcBroadphaseAreaSimple(Vector2 a_position, SimpleCollisionShape a_shape)
+        public static AARectangle CalcBroadphaseAreaSimple(Vector2 a_position, SimpleCollisionShape a_shape)
         {
             return null;
         }

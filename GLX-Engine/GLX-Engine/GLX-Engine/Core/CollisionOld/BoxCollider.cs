@@ -6,17 +6,16 @@ namespace GLXEngine.Core
     public class BoxCollider : Collider
     {
         public BoundsObject m_owner;
-        public List<Type> _ignore;
         //public EasyDraw m_canvas;
 
         //------------------------------------------------------------------------------------------------------------------------
         //														BoxCollider()
         //------------------------------------------------------------------------------------------------------------------------		
-        public BoxCollider(BoundsObject owner, Type[] ignore = null)
+        public BoxCollider(BoundsObject a_owner, Type[] a_ignoreList = null)
         {
-            m_owner = owner;
-            if (ignore != null)
-                _ignore = new List<Type>(ignore);
+            m_owner = a_owner;
+            if (a_ignoreList != null)
+                m_ignoreList = new List<Type>(a_ignoreList);
             //m_canvas = a_canvas;
         }
 
@@ -35,12 +34,12 @@ namespace GLXEngine.Core
                 if (otherCollider.m_owner.parent == null)
                     return false;
 
-                if (_ignore != null)
-                    if (_ignore.Contains(otherCollider.m_owner.parent.GetType()))
+                if (m_ignoreList != null)
+                    if (m_ignoreList.Contains(otherCollider.m_owner.parent.GetType()))
                         return false;
 
-                if (otherCollider._ignore != null)
-                    if (otherCollider._ignore.Contains(m_owner.parent.GetType()))
+                if (otherCollider.m_ignoreList != null)
+                    if (otherCollider.m_ignoreList.Contains(m_owner.parent.GetType()))
                         return false;
 
                 Vector2[] extendsA = m_owner.GetExtents();
@@ -116,12 +115,11 @@ namespace GLXEngine.Core
         //------------------------------------------------------------------------------------------------------------------------
         //														HitTest()
         //------------------------------------------------------------------------------------------------------------------------		
-        public override bool HitTestPoint(float x, float y)
+        public override bool HitTestPoint(Vector2 a_point)
         {
             Vector2[] c = m_owner.GetExtents();
             if (c == null) return false;
-            Vector2 p = new Vector2(x, y);
-            return pointOverlapsArea(p, c);
+            return pointOverlapsArea(a_point, c);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -165,6 +163,11 @@ namespace GLXEngine.Core
             Vector2 s = lineEndB - closestPointB;
 
             float d = r.x * s.y - r.y * s.x;
+            if(d == 0)
+            {
+                colPos = null;
+                return false;
+            }
             float u = ((closestPointB.x - closestPointA.x) * r.y - (closestPointB.y - closestPointA.y) * r.x) / d;
             float t = ((closestPointB.x - closestPointA.x) * s.y - (closestPointB.y - closestPointA.y) * s.x) / d;
 

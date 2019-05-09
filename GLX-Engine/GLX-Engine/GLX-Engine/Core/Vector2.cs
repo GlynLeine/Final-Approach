@@ -92,6 +92,7 @@ namespace GLXEngine.Core
         public Vector2 Normalize()                          {   return this /= magnitude;       }
         public Vector2 SetMagnitude(float a_newMag)         {   magnitude = a_newMag; return this; }
         public Vector2 SetAngle(float a_newAngle)           {   angle = a_newAngle; return this; }
+        public Vector2 Rotate(float a_rotation)             {   angle += a_rotation; return this; }
         public Vector2 Clamp(Vector2 a_min, Vector2 a_max)  {   x = Mathf.Clamp(x, a_min.x, a_max.x); y = Mathf.Clamp(y, a_min.y, a_max.y); return this; }
         public float Distance(Vector2 b)                    {   return Abs((this-b).magnitude); }
 
@@ -109,7 +110,7 @@ namespace GLXEngine.Core
         //------------------------------------------------------------------------------------------------------------------------
         public static implicit operator float[] (Vector2 a) {   return new float[] { a.x, a.y };    }
         public static implicit operator Vector2(float[] a)
-        {   if (a.Length < 2) throw new Exception("Float array has fewer numbers than the array.");     else  return new Vector2(a[0], a[1]); }
+        {   return a == null? new Vector2() : (a.Length < 2? throw new Exception("Float array has fewer numbers than the array.") :  new Vector2(a[0], a[1])); }
 
         public static implicit operator Vector2i (Vector2 a) {   return new Vector2i(a);    }
         public static implicit operator Vector2 (Vector2i a) {   return new Vector2(a);     }

@@ -13,7 +13,7 @@ namespace GLXEngine
     {
         public static Game main = null;
 
-        public GLContext _glContext;
+        public GLContext m_glContext;
 
         public override event RenderDelegate OnAfterRender;
 
@@ -35,7 +35,7 @@ namespace GLXEngine
         /// <param name='fullScreen'>
         /// If set to <c>true</c> the application will run in fullscreen mode.
         /// </param>
-        public Game(int pWidth, int pHeight, bool pFullScreen, bool pVSync = true, int pRealWidth = -1, int pRealHeight = -1, bool pPixelArt = false) : base(new Rectangle(-pWidth*0.5f, -pHeight*0.5f, pWidth*2f, pHeight*2f))
+        public Game(int pWidth, int pHeight, bool pFullScreen, bool pVSync = true, int pRealWidth = -1, int pRealHeight = -1, bool pPixelArt = false) : base(new AARectangle(-pWidth*0.5f, -pHeight*0.5f, pWidth*2f, pHeight*2f))
         {
             if (pRealWidth <= 0)
             {
@@ -61,10 +61,10 @@ namespace GLXEngine
             else
             {
                 main = this;
-                _glContext = new GLContext(this);
-                _glContext.CreateWindow(pWidth, pHeight, pFullScreen, pVSync, pRealWidth, pRealHeight);
+                m_glContext = new GLContext(this);
+                m_glContext.CreateWindow(pWidth, pHeight, pFullScreen, pVSync, pRealWidth, pRealHeight);
 
-                _renderRange = new Rectangle(0, 0, pWidth, pHeight);
+                m_renderRange = new AARectangle(0, 0, pWidth, pHeight);
 
                 width = pWidth;
                 height = pHeight;
@@ -98,7 +98,7 @@ namespace GLXEngine
         {
             // Translate from GLXEngine coordinates (origin top left) to OpenGL coordinates (origin bottom left):
             //Console.WriteLine ("Setting viewport to {0},{1},{2},{3}",x,y,width,height);
-            _glContext.SetScissor(x, game.height - height - y, width, height);
+            m_glContext.SetScissor(x, game.height - height - y, width, height);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ namespace GLXEngine
         /// </param>
         public void ShowMouse(bool enable)
         {
-            _glContext.ShowCursor(enable);
+            m_glContext.ShowCursor(enable);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ namespace GLXEngine
         public override void Start()
         {
             base.Start();
-            _glContext.Run();
+            m_glContext.Run();
         }
 
         bool recurse = true;
@@ -158,7 +158,7 @@ namespace GLXEngine
         /// </summary>
         public override int width
         {
-            get { return _glContext.width; }
+            get { return m_glContext.width; }
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -169,7 +169,7 @@ namespace GLXEngine
         /// </summary>
         public override int height
         {
-            get { return _glContext.height; }
+            get { return m_glContext.height; }
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -181,14 +181,14 @@ namespace GLXEngine
         override protected void OnDestroy()
         {
             base.OnDestroy();
-            _glContext.Close();
+            m_glContext.Close();
         }
 
         public int currentFps
         {
             get
             {
-                return _glContext.currentFps;
+                return m_glContext.currentFps;
             }
         }
 
@@ -196,11 +196,11 @@ namespace GLXEngine
         {
             get
             {
-                return _glContext.targetFps;
+                return m_glContext.targetFps;
             }
             set
             {
-                _glContext.targetFps = value;
+                m_glContext.targetFps = value;
             }
         }
 
