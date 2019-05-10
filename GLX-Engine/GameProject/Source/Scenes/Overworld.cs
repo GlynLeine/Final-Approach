@@ -29,8 +29,6 @@ namespace GameProject
         public override void Start()
         {
             base.Start();
-            (game as Program).score = 0;
-            difficulty = 0;
 
             frameRateCounter = new Timer(0.1f,
                 () =>
@@ -65,9 +63,9 @@ namespace GameProject
             enemies = new List<GameObject>();
             while (enemies.Count < enemyCount)
             {
-                Vector2 pos = new Vector2(Utils.Random(0, 2) == 0 ? game.RenderRange.left : game.RenderRange.right, Utils.Random(0, 2) == 0 ? game.RenderRange.top : game.RenderRange.bottom);
-                if (Utils.Random(0, 2) == 0) pos.x = Utils.Random(game.RenderRange.left, game.RenderRange.right);
-                else pos.y = Utils.Random(game.RenderRange.top, game.RenderRange.bottom);
+                Vector2 pos = new Vector2(Utils.Random(0, 2) == 0 ? game.RenderRange.p_left : game.RenderRange.p_right, Utils.Random(0, 2) == 0 ? game.RenderRange.p_top : game.RenderRange.p_bottom);
+                if (Utils.Random(0, 2) == 0) pos.x = Utils.Random(game.RenderRange.p_left, game.RenderRange.p_right);
+                else pos.y = Utils.Random(game.RenderRange.p_top, game.RenderRange.p_bottom);
                 if (!(pos.x < screenPosition.x + 128 || pos.y < screenPosition.y + 128 || pos.x > screenPosition.x + width - 128 || pos.y > screenPosition.y + height - 128))
                 {
                     Enemy enemy = new Enemy(this, player, ref enemies, UI, Utils.Random(0, 0.2f));
@@ -94,11 +92,11 @@ namespace GameProject
             position = -player.position + (new Vector2(Game.main.width, Game.main.height) * 0.5f);
             UI.position = player.position;
 
-            while (enemies.Count < Mathf.Floor(enemyCount + (difficulty / 5f)))
+            while (enemies.Count < Mathf.Floor(enemyCount + (difficulty / 3f)))
             {
-                Vector2 pos = new Vector2(Utils.Random(0, 2) == 0 ? game.RenderRange.left : game.RenderRange.right, Utils.Random(0, 2) == 0 ? game.RenderRange.top : game.RenderRange.bottom);
-                if (Utils.Random(0, 2) == 0) pos.x = Utils.Random(game.RenderRange.left, game.RenderRange.right);
-                else pos.y = Utils.Random(game.RenderRange.top, game.RenderRange.bottom);
+                Vector2 pos = new Vector2(Utils.Random(0, 2) == 0 ? game.RenderRange.p_left : game.RenderRange.p_right, Utils.Random(0, 2) == 0 ? game.RenderRange.p_top : game.RenderRange.p_bottom);
+                if (Utils.Random(0, 2) == 0) pos.x = Utils.Random(game.RenderRange.p_left, game.RenderRange.p_right);
+                else pos.y = Utils.Random(game.RenderRange.p_top, game.RenderRange.p_bottom);
                 if (!(pos.x < screenPosition.x + 128 || pos.y < screenPosition.y + 128 || pos.x > screenPosition.x + width - 128 || pos.y > screenPosition.y + height - 128))
                 {
                     Enemy enemy = new Enemy(this, player, ref enemies, UI, Utils.Random(0 + difficulty / 500f, 0.2f + difficulty / 200f));

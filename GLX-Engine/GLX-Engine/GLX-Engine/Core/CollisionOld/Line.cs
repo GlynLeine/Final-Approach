@@ -4,14 +4,13 @@ namespace GLXEngine.Core
 {
     public class Line : Shape
     {
-        public float m_angle;
         public float m_length;
 
         public Vector2 start
         {
             get
             {
-                Vector2 halfLine = new Vector2(m_angle) * (m_length * 0.5f);
+                Vector2 halfLine = new Vector2(rotation) * (m_length * 0.5f);
                 return position - halfLine;
             }
 
@@ -19,7 +18,7 @@ namespace GLXEngine.Core
             {
                 Vector2 halfLine = value - position;
                 m_length = halfLine.magnitude * 2f;
-                m_angle = halfLine.angle;
+                rotation = halfLine.angle;
             }
         }
 
@@ -27,7 +26,7 @@ namespace GLXEngine.Core
         {
             get
             {
-                Vector2 halfLine = new Vector2(m_angle) * (m_length * 0.5f);
+                Vector2 halfLine = new Vector2(rotation) * (m_length * 0.5f);
                 return position + halfLine;
             }
 
@@ -35,24 +34,37 @@ namespace GLXEngine.Core
             {
                 Vector2 halfLine = position - value;
                 m_length = halfLine.magnitude * 2f;
-                m_angle = halfLine.angle;
+                rotation = halfLine.angle;
             }
         }
 
         public override bool Contains(Vector2 a_point, out Vector2 o_mtv)
         {
-            a_point -= start;
-            a_point.angle -= m_angle;
+            o_mtv = new Vector2();
+            a_point = (a_point - start).Rotate(-rotation);
 
             if (a_point.x >= 0 && a_point.x <= m_length && position.y == 0)
             {
-                a_point.angle += m_angle;
-                a_point += start;
+                o_mtv = new Vector2(rotation + 90);
+                a_point = a_point.Rotate(rotation) + start;
                 return true;
             }
 
-            a_point.angle += m_angle;
-            a_point += start;
+            a_point = a_point.Rotate(rotation) + start;
+            return false;
+        }
+
+        public override bool Contains(Vector2 a_point)
+        {
+            a_point = (a_point - start).Rotate(-rotation);
+
+            if (a_point.x >= 0 && a_point.x <= m_length && position.y == 0)
+            {
+                a_point = a_point.Rotate(rotation) + start;
+                return true;
+            }
+
+            a_point = a_point.Rotate(rotation) + start;
             return false;
         }
 
@@ -78,22 +90,19 @@ namespace GLXEngine.Core
 
         public bool Overlaps(Rectangle a_other, out Vector2 o_mtv)
         {
-            position -= a_other.position;
-            position.angle -= a_other.m_angle;
+            a_other.position = (a_other.position - start).Rotate(-rotation);
 
-            Vector2 min = new Vector2(a_other.left, a_other.top);
-            Vector2 max = new Vector2(a_other.right, a_other.bottom);
-            Vector2 closestPoint = Vector2.Clamp(position, min, max);
+            Vector2 min = new Vector2(0, 0);
+            Vector2 max = new Vector2(m_length, 0);
+            Vector2 closestPoint = Vector2.Clamp(a_other.position, min, max);
 
-            if (Contains(closestPoint, out o_mtv))
+            if (a_other.Contains(closestPoint, out o_mtv))
             {
-                position.angle += a_other.m_angle;
-                position += a_other.position;
+                a_other.position = a_other.position.Rotate(rotation) + start;
                 return true;
             }
 
-            position.angle += a_other.m_angle;
-            position += a_other.position;
+            a_other.position = a_other.position.Rotate(rotation) + start;
             return false;
         }
 
@@ -107,7 +116,37 @@ namespace GLXEngine.Core
             float colScalarA = ((a_other.start.x - start.x) * otherLine.y - (a_other.start.y - start.y) * otherLine.x) / crossArea;
             float colScalarB = ((a_other.start.x - start.x) * line.y - (a_other.start.y - start.y) * line.x) / crossArea;
 
-            return 0 <= colScalarB && colScalarB <= 1 && 0 <= colScalarA && colScalarA <= 1;
+            if (0 <= colScalarB && colScalarB <= 1 && 0 <= colScalarA && colScalarA <= 1)
+            {
+                if(colScalarA*line.magnitude < colScalarB*otherLine.magnitude)
+                {
+                    o_mtv = line*colScalarA;
+                    return true;
+                }
+                o_mtv = -(otherLine*colScalarB);
+                return true;
+            }
+            return false;
+        }
+
+        public override bool Overlaps(Shape a_other)
+        {
+            Vector2 temp;
+            Type otherType = a_other.GetType();
+            if (otherType.IsAssignableFrom(typeof(Rectangle)))
+            {
+                return Overlaps(a_other as Rectangle, out temp);
+            }
+            else if (otherType.IsAssignableFrom(typeof(Circle)))
+            {
+                return (a_other as Circle).Overlaps(this, out temp);
+            }
+            else if (otherType.IsAssignableFrom(typeof(Line)))
+            {
+                return Overlaps(a_other as Line, out temp);
+            }
+
+            return false;
         }
     }
 }

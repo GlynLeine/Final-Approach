@@ -16,8 +16,8 @@ namespace GLXEngine
         private List<Scene> m_newScenes;
 
         public Vector2i m_dimensions;
-        protected Rectangle _renderRange;
-        protected Rectangle m_collisionRange;
+        protected AARectangle m_renderRange;
+        protected AARectangle m_collisionRange;
 
         public Scene m_masterScene;
         public GameObject m_player;
@@ -42,7 +42,7 @@ namespace GLXEngine
         public delegate void RenderDelegate(GLContext glContext);
         public virtual event RenderDelegate OnAfterRender;
 
-        public Scene(Rectangle a_collisionRange)
+        public Scene(AARectangle a_collisionRange)
         {
             Setup(Game.main, a_collisionRange);
         }
@@ -57,7 +57,7 @@ namespace GLXEngine
             Setup(a_masterScene);
         }
 
-        public virtual void Setup(Scene a_masterScene, Rectangle a_collisionRange = null)
+        public virtual void Setup(Scene a_masterScene, AARectangle a_collisionRange = null)
         {
             m_active = false;
             m_timeActive = 0f;
@@ -159,17 +159,17 @@ namespace GLXEngine
         /// You only need to change this when rendering to subwindows (e.g. split screen).
         /// </summary>
         /// <value>The render range.</value>
-        public Rectangle RenderRange
+        public AARectangle RenderRange
         {
             get
             {
-                Vector2 topLeft = InverseTransformPoint(_renderRange.left, _renderRange.top);
-                Vector2 bottomRight = InverseTransformPoint(_renderRange.right, _renderRange.bottom);
-                return new Rectangle(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+                Vector2 topLeft = InverseTransformPoint(m_renderRange.p_left, m_renderRange.p_top);
+                Vector2 bottomRight = InverseTransformPoint(m_renderRange.p_right, m_renderRange.p_bottom);
+                return new AARectangle(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
             }
             set
             {
-                _renderRange = value;
+                m_renderRange = value;
             }
         }
 
@@ -247,7 +247,7 @@ namespace GLXEngine
                 for (int i = 0; i < a_points.Length - 1; i++)
                 {
                     Vector2 point = new Vector2(a_points[i], a_points[i + 1]);
-                    if (((point.x > RenderRange.left) && (point.y > RenderRange.top) && (point.x <= RenderRange.right) && (point.y <= RenderRange.bottom)))
+                    if (((point.x > RenderRange.p_left) && (point.y > RenderRange.p_top) && (point.x <= RenderRange.p_right) && (point.y <= RenderRange.p_bottom)))
                         return true;
                 }
             return false;
@@ -258,7 +258,7 @@ namespace GLXEngine
             for (int i = 0; i < a_points.Length; i++)
             {
                 Vector2 point = a_points[i];
-                if (((point.x > RenderRange.left) && (point.y > RenderRange.top) && (point.x <= RenderRange.right) && (point.y <= RenderRange.bottom)))
+                if (((point.x > RenderRange.p_left) && (point.y > RenderRange.p_top) && (point.x <= RenderRange.p_right) && (point.y <= RenderRange.p_bottom)))
                     return true;
             }
             return false;

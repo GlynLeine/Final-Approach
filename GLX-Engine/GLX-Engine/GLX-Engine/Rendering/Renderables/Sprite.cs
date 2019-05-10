@@ -163,7 +163,7 @@ namespace GLXEngine
                     if (bounds[i].y > maxY) maxY = bounds[i].y;
                     if (bounds[i].y < minY) minY = bounds[i].y;
                 }
-                bool test = (maxX < game.RenderRange.left) || (maxY < game.RenderRange.top) || (minX >= game.RenderRange.right) || (minY >= game.RenderRange.bottom);
+                bool test = (maxX < game.RenderRange.p_left) || (maxY < game.RenderRange.p_top) || (minX >= game.RenderRange.p_right) || (minY >= game.RenderRange.p_bottom);
                 if (test == false)
                 {
                     if (blendMode != null) blendMode.enable();

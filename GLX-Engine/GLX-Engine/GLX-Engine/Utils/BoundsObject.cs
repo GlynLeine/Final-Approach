@@ -7,11 +7,11 @@ namespace GLXEngine
     public class BoundsObject : GameObject
     {
 
-        protected Rectangle m_bounds;
+        protected AARectangle m_bounds;
 
         public BoundsObject(Scene a_scene, float a_width = 0, float a_height = 0) : base(a_scene)
         {
-            m_bounds = new Rectangle(0, 0, a_width, a_height);
+            m_bounds = new AARectangle(0, 0, a_width, a_height);
         }
 
         protected BoundsObject()
@@ -26,7 +26,7 @@ namespace GLXEngine
                 m_bounds.m_height = a_height;
             }
             else
-                m_bounds = new Rectangle(0, 0, a_width, a_height);
+                m_bounds = new AARectangle(0, 0, a_width, a_height);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -73,19 +73,19 @@ namespace GLXEngine
         public Vector2[] GetHull()
         {
             return new Vector2[4] {
-               new Vector2(m_bounds.left, m_bounds.top),
-               new Vector2(m_bounds.right, m_bounds.top),
-               new Vector2(m_bounds.right, m_bounds.bottom),
-               new Vector2(m_bounds.left, m_bounds.bottom)
+               new Vector2(m_bounds.p_left, m_bounds.p_top),
+               new Vector2(m_bounds.p_right, m_bounds.p_top),
+               new Vector2(m_bounds.p_right, m_bounds.p_bottom),
+               new Vector2(m_bounds.p_left, m_bounds.p_bottom)
             };
         }
         public float[] GetArea()
         {
             return new float[8] {
-               m_bounds.left, m_bounds.top,
-               m_bounds.right, m_bounds.top,
-               m_bounds.right, m_bounds.bottom,
-               m_bounds.left, m_bounds.bottom
+               m_bounds.p_left, m_bounds.p_top,
+               m_bounds.p_right, m_bounds.p_top,
+               m_bounds.p_right, m_bounds.p_bottom,
+               m_bounds.p_left, m_bounds.p_bottom
             };
         }
 
@@ -101,10 +101,10 @@ namespace GLXEngine
         public Vector2[] GetExtents()
         {
             Vector2[] ret = new Vector2[4];
-            ret[0] = TransformPoint(m_bounds.left, m_bounds.top);
-            ret[1] = TransformPoint(m_bounds.right, m_bounds.top);
-            ret[2] = TransformPoint(m_bounds.right, m_bounds.bottom);
-            ret[3] = TransformPoint(m_bounds.left, m_bounds.bottom);
+            ret[0] = TransformPoint(m_bounds.p_left, m_bounds.p_top);
+            ret[1] = TransformPoint(m_bounds.p_right, m_bounds.p_top);
+            ret[2] = TransformPoint(m_bounds.p_right, m_bounds.p_bottom);
+            ret[3] = TransformPoint(m_bounds.p_left, m_bounds.p_bottom);
             return ret;
         }
 

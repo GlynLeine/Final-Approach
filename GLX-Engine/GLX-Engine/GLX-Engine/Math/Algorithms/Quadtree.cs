@@ -24,7 +24,7 @@ namespace GLXEngine
 
         List<Point> m_points;
 
-        public Rectangle m_boundary;
+        public AARectangle m_boundary;
         public int m_capacity;
         bool m_divided;
 
@@ -51,7 +51,7 @@ namespace GLXEngine
         QuadTree m_southeast;
         QuadTree m_southwest;
 
-        public QuadTree(Rectangle a_boundary, int a_capacity)
+        public QuadTree(AARectangle a_boundary, int a_capacity)
         {
             m_capacity = a_capacity;
             m_boundary = a_boundary;
@@ -63,7 +63,7 @@ namespace GLXEngine
         public QuadTree(QuadTree a_source)
         {
             m_capacity = a_source.m_capacity;
-            m_boundary = new Rectangle(a_source.m_boundary);
+            m_boundary = new AARectangle(a_source.m_boundary);
             m_points = new List<Point>(a_source.m_points);
             m_divided = a_source.m_divided;
             if (a_source.m_divided)
@@ -82,13 +82,13 @@ namespace GLXEngine
             float x = m_boundary.x;
             float y = m_boundary.y;
 
-            Rectangle ne = new Rectangle(x + w, y, w, h);
+            AARectangle ne = new AARectangle(x + w, y, w, h);
             m_northeast = new QuadTree(ne, m_capacity);
-            Rectangle nw = new Rectangle(x, y, w, h);
+            AARectangle nw = new AARectangle(x, y, w, h);
             m_northwest = new QuadTree(nw, m_capacity);
-            Rectangle se = new Rectangle(x + w, y + h, w, h);
+            AARectangle se = new AARectangle(x + w, y + h, w, h);
             m_southeast = new QuadTree(se, m_capacity);
-            Rectangle sw = new Rectangle(x, y + h, w, h);
+            AARectangle sw = new AARectangle(x, y + h, w, h);
             m_southwest = new QuadTree(sw, m_capacity);
 
             m_divided = true;

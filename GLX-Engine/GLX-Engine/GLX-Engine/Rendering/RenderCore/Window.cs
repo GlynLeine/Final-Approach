@@ -114,7 +114,7 @@ namespace GLXEngine {
 				GL.Clear(GL.COLOR_BUFFER_BIT);
 				current.Render (glContext);
 				main.SetViewport (0, 0, Game.main.width, Game.main.height);
-				main.RenderRange = new GLXEngine.Core.Rectangle (0, 0, main.width, main.height);
+				main.RenderRange = new AARectangle (0, 0, main.width, main.height);
 			}
 			
 			for (int i=0; i<pushes; i++) {
@@ -139,7 +139,7 @@ namespace GLXEngine {
 				if (worldSpaceCorners[i].y > maxY) maxY = worldSpaceCorners[i].y;
 				if (worldSpaceCorners[i].y < minY) minY = worldSpaceCorners[i].y;
 			}
-			Game.main.RenderRange = new GLXEngine.Core.Rectangle (minX, minY, maxX - minX, maxY - minY);
+			Game.main.RenderRange = new AARectangle(minX, minY, maxX - minX, maxY - minY);
 		}
 	}
 }
