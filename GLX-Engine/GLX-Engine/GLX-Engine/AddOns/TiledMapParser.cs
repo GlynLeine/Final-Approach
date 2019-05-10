@@ -358,6 +358,8 @@ namespace TiledMapParser
         public string Name;
         [XmlElement("object")]
         public TiledObject[] Objects;
+        [XmlElement("ellipse")]
+        public TiledObject[] Circles;
 
         override public string ToString()
         {
@@ -424,6 +426,8 @@ namespace TiledMapParser
         public float X;
         [XmlAttribute("y")]
         public float Y;
+        [XmlAttribute("rotation")]
+        public float rotation;
         [XmlElement("text")]
         public Text textField;
 

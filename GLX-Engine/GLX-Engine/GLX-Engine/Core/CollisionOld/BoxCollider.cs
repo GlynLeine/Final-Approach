@@ -42,34 +42,32 @@ namespace GLXEngine.Core
                     if (otherCollider.m_ignoreList.Contains(m_owner.parent.GetType()))
                         return false;
 
-                Vector2[] extendsA = m_owner.GetExtents();
-                if (extendsA == null) return false;
-
-                Vector2[] extendsB = otherCollider.m_owner.GetExtents();
-                if (extendsB == null) return false;
-
                 Vector2 positionA = m_owner.screenPosition;
                 Vector2[] hullA = m_owner.GetHull();
 
                 Vector2 positionB = otherCollider.m_owner.screenPosition;
                 Vector2[] hullB = otherCollider.m_owner.GetHull();
 
+                Game.main.UI.Stroke(0, 255, 0);
+                Game.main.UI.Rect(positionA.x, positionA.y, m_owner.width, m_owner.height);
+                Game.main.UI.Rect(positionB.x, positionB.y, otherCollider.m_owner.width, otherCollider.m_owner.height);
+
                 float extendA = 0, extendB = 0;
 
                 foreach (Vector2 point in hullA)
                 {
                     if (Mathf.Abs(point.x) > extendA)
-                        extendA = point.x;
+                        extendA = Mathf.Abs(point.x);
                     if (Mathf.Abs(point.y) > extendA)
-                        extendA = point.y;
+                        extendA = Mathf.Abs(point.y);
                 }
 
                 foreach (Vector2 point in hullB)
                 {
                     if (Mathf.Abs(point.x) > extendB)
-                        extendB = point.x;
+                        extendB = Mathf.Abs(point.x);
                     if (Mathf.Abs(point.y) > extendB)
-                        extendB = point.y;
+                        extendB = Mathf.Abs(point.y);
                 }
 
                 Vector2 velocityA = m_owner.parent.m_velocity * Time.deltaTime;
@@ -104,7 +102,7 @@ namespace GLXEngine.Core
                 //    }
                 //}
 
-                return SATNarrowPhase(extendsA, positionA, extendsB, positionB);
+                return SATNarrowPhase(hullA, positionA, hullB, positionB);
             }
             else
             {
@@ -163,7 +161,7 @@ namespace GLXEngine.Core
             Vector2 s = lineEndB - closestPointB;
 
             float d = r.x * s.y - r.y * s.x;
-            if(d == 0)
+            if (d == 0)
             {
                 colPos = null;
                 return false;
@@ -190,12 +188,9 @@ namespace GLXEngine.Core
                 Vector2 normal = (b - a).normal;
                 normal = new Vector2(normal.y, -normal.x);
 
-                //if (m_canvas != null)
-                //{
-                //    m_canvas.Stroke(0, 255, 0);
-                //    m_canvas.Line(positionA.x, positionA.y, positionA.x + normal.x * 50, positionA.y + normal.y * 50);
-                //    m_canvas.Stroke(0);
-                //}
+                Game.main.UI.Stroke(0, 255, 0);
+                Game.main.UI.Line(positionA.x, positionA.y, positionA.x + normal.x * 50, positionA.y + normal.y * 50);
+                Game.main.UI.Stroke(0);
 
                 if (!axes.Contains(normal) && !axes.Contains(-normal))
                     axes.Add(normal);
@@ -219,7 +214,7 @@ namespace GLXEngine.Core
                 float minA = float.MaxValue, maxA = float.MinValue, minB = float.MaxValue, maxB = float.MinValue;
                 for (int j = 0; j < hullA.Length; j++)
                 {
-                    float projection = (hullA[j]).Dot(axes[i]);
+                    float projection = (hullA[j] + positionA).Dot(axes[i]);
                     if (projection < minA)
                         minA = projection;
                     if (projection > maxA)
@@ -227,7 +222,7 @@ namespace GLXEngine.Core
                 }
                 for (int j = 0; j < hullB.Length; j++)
                 {
-                    float projection = (hullB[j]).Dot(axes[i]);
+                    float projection = (hullB[j] + positionB).Dot(axes[i]);
                     if (projection < minB)
                         minB = projection;
                     if (projection > maxB)
@@ -250,12 +245,11 @@ namespace GLXEngine.Core
 
             m_minimumTranslationVec = (m_minimumTranslationVec + mtv) / 2;
 
-            //if (m_canvas != null)
-            //{
-            //    m_canvas.Stroke(0, 0, 255);
-            //    m_canvas.Line(positionA.x, positionA.y, positionA.x + mtv.x, positionA.y + mtv.y);
-            //    m_canvas.Stroke(0);
-            //}
+
+            Game.main.UI.Stroke(0, 0, 255);
+            Game.main.UI.Line(positionA.x, positionA.y, positionA.x + mtv.x, positionA.y + mtv.y);
+            Game.main.UI.Stroke(0);
+
 
             return true;
         }

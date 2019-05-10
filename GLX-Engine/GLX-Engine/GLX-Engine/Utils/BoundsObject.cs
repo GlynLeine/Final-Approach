@@ -7,26 +7,33 @@ namespace GLXEngine
     public class BoundsObject : GameObject
     {
 
-        protected AARectangle m_bounds;
+        protected Rectangle m_bounds;
 
         public BoundsObject(Scene a_scene, float a_width = 0, float a_height = 0) : base(a_scene)
         {
-            m_bounds = new AARectangle(0, 0, a_width, a_height);
+            m_bounds = new Rectangle(0, 0, a_width, a_height);
+            m_bounds.x = a_width / 2;
+            m_bounds.y = a_height / 2;
         }
 
         protected BoundsObject()
         {
         }
 
+        protected override Collider createCollider()
+        {
+            return new BoxCollider(this);
+        }
+
         public void SetBounds(float a_width, float a_height)
         {
-            if(m_bounds != null)
+            if (m_bounds != null)
             {
                 m_bounds.m_width = a_width;
                 m_bounds.m_height = a_height;
             }
             else
-                m_bounds = new AARectangle(0, 0, a_width, a_height);
+                m_bounds = new Rectangle(0, 0, a_width, a_height);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -122,8 +129,8 @@ namespace GLXEngine
         /// </param>
         public void SetOrigin(float x, float y)
         {
-            m_bounds.x = -x;
-            m_bounds.y = -y;
+            m_bounds.x = x + width / 2;
+            m_bounds.y = y + height / 2;
         }
 
     }

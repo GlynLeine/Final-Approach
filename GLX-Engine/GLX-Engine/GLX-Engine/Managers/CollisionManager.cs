@@ -38,7 +38,7 @@ namespace GLXEngine
         //------------------------------------------------------------------------------------------------------------------------
         //														CollisionManager()
         //------------------------------------------------------------------------------------------------------------------------
-        public CollisionManager(AARectangle a_bounds, int a_cellCapacity = 4)
+        public CollisionManager(AARectangle a_bounds, int a_cellCapacity = 1)
         {
             m_colliderTree = new QuadTree(a_bounds, a_cellCapacity);
         }
@@ -71,7 +71,7 @@ namespace GLXEngine
 
                 List<QuadTree.Point> foundColliders = new List<QuadTree.Point>();
 
-                m_colliderTree.Query(BroadPhaseRectangle(info.m_gameObject), ref foundColliders);
+                m_colliderTree.Query(BroadPhaseCircle(info.m_gameObject), ref foundColliders, 255);
 
                 for (int j = foundColliders.Count - 1; j >= 0; j--)
                 {
@@ -106,17 +106,17 @@ namespace GLXEngine
             foreach (Vector2 point in hullA)
             {
                 if (Mathf.Abs(point.x) > extendA)
-                    extendA = point.x;
+                    extendA = Mathf.Abs(point.x);
                 if (Mathf.Abs(point.y) > extendA)
-                    extendA = point.y;
+                    extendA = Mathf.Abs(point.y);
             }
 
             float deltaTime = Time.deltaTime;
-            float radius = velocityA.magnitude * deltaTime * 0.5f + extendA;
+            float radius = velocityA.magnitude * deltaTime * 0.5f + extendA*2;
 
             Vector2 center = position - velocityA * deltaTime * 0.5f;
 
-            return new Circle(position.x, position.y, 500);
+            return new Circle(center.x, center.y, radius);
         }
 
         private AARectangle BroadPhaseRectangle(GameObject gameObject)
@@ -131,9 +131,9 @@ namespace GLXEngine
             foreach (Vector2 point in hullA)
             {
                 if (Mathf.Abs(point.x) > extendA)
-                    extendA = point.x;
+                    extendA = Mathf.Abs(point.x);
                 if (Mathf.Abs(point.y) > extendA)
-                    extendA = point.y;
+                    extendA = Mathf.Abs(point.y);
             }
 
             float deltaTime = Time.deltaTime;
@@ -141,7 +141,7 @@ namespace GLXEngine
 
             Vector2 center = position - velocityA * deltaTime * 0.5f;
 
-            return new AARectangle(position.x, position.y, 100, 100);
+            return new AARectangle(center.x, center.y, radius*2, radius*2);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -172,25 +172,25 @@ namespace GLXEngine
             if (gameObject.collider != null && !m_colliderList.Contains(gameObject))
             {
                 m_colliderList.Add(gameObject);
-            }
 
-            MethodInfo info = gameObject.GetType().GetMethod("OnCollision", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                MethodInfo info = gameObject.GetType().GetMethod("OnCollision", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
-            if (info != null)
-            {
-
-                CollisionDelegate onCollision = (CollisionDelegate)Delegate.CreateDelegate(typeof(CollisionDelegate), gameObject, info, false);
-                if (onCollision != null && !m_collisionReferences.ContainsKey(gameObject))
+                if (info != null)
                 {
-                    ColliderInfo colliderInfo = new ColliderInfo(gameObject, onCollision);
-                    m_collisionReferences[gameObject] = colliderInfo;
-                    m_activeColliderList.Add(colliderInfo);
-                }
 
-            }
-            else
-            {
-                validateCase(gameObject);
+                    CollisionDelegate onCollision = (CollisionDelegate)Delegate.CreateDelegate(typeof(CollisionDelegate), gameObject, info, false);
+                    if (onCollision != null && !m_collisionReferences.ContainsKey(gameObject))
+                    {
+                        ColliderInfo colliderInfo = new ColliderInfo(gameObject, onCollision);
+                        m_collisionReferences[gameObject] = colliderInfo;
+                        m_activeColliderList.Add(colliderInfo);
+                    }
+
+                }
+                else
+                {
+                    validateCase(gameObject);
+                }
             }
         }
 

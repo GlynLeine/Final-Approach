@@ -116,8 +116,12 @@ namespace GLXEngine
               m_southeast.Insert(a_point) || m_southwest.Insert(a_point));
         }
 
-        public List<Point> Query(Shape range, ref List<Point> found)
+        public List<Point> Query(Shape range, ref List<Point> found, int color)
         {
+            Game.main.UI.NoFill();
+            Game.main.UI.Stroke(color, 0, 255-color);
+            Game.main.UI.StrokeWeight(5);
+            Game.main.UI.Rect(m_boundary.x + m_boundary.m_width/2, m_boundary.y + m_boundary.m_height/2, m_boundary.m_width, m_boundary.m_height);
             if (!range.Overlaps(m_boundary))
             {
                 return found;
@@ -132,10 +136,10 @@ namespace GLXEngine
             }
             if (m_divided)
             {
-                m_northwest.Query(range, ref found);
-                m_northeast.Query(range, ref found);
-                m_southwest.Query(range, ref found);
-                m_southeast.Query(range, ref found);
+                m_northwest.Query(range, ref found, Math.Max(0, color - 50));
+                m_northeast.Query(range, ref found, Math.Max(0, color - 50));
+                m_southwest.Query(range, ref found, Math.Max(0, color - 50));
+                m_southeast.Query(range, ref found, Math.Max(0, color - 50));
             }
 
             return found;
@@ -161,7 +165,7 @@ namespace GLXEngine
             {
                 Circle range = new Circle(a_point.x, a_point.y, radius);
                 List<Point> points = new List<Point>();
-                points = Query(range, ref points);
+                points = Query(range, ref points, 255);
                 if (points.Count == a_count)
                 {
                     return points; // Return when we hit the right size

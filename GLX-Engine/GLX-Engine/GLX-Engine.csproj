@@ -120,5 +120,7 @@
     <Compile Include="GLX-Engine\Rendering\RenderCore\Window.cs" />
     <Compile Include="GLX-Engine\Rendering\Renderables\EasyDraw.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GLX-Engine\Rendering\UI\" />
+  </ItemGroup>
 </Project>

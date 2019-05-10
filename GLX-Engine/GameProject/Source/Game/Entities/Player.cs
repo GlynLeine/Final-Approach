@@ -6,7 +6,7 @@ namespace GameProject
 {
     public class Player : GameObject
     {
-        const float m_speed = 600;
+        const float m_speed = 300;
         const float m_angularAcceleration = 5f;
 
         public List<string> m_tags = new List<string>();
@@ -70,7 +70,7 @@ namespace GameProject
             }
             m_guns[0].SetActive(true);
 
-            //m_hp.current = 10;
+            m_hp.current = 10;
 
             m_canvas = a_canvas;
             //(collider as BoxCollider).m_canvas = a_canvas;
@@ -90,8 +90,9 @@ namespace GameProject
             if (m_hp.current <= 0)
                 return;
 
+            if (m_movementForce.sqrMagnitude > 1) m_movementForce.Normalize();
             m_movementForce.y -= a_value;
-            m_movementForce.y = Mathf.Clamp(m_movementForce.y, -1, 1);
+            if (m_movementForce.sqrMagnitude > 0) m_movementForce.magnitude = m_speed;
         }
 
         public void MoveRight(float a_value, List<int> a_controllerIDs)
@@ -99,8 +100,10 @@ namespace GameProject
             if (m_hp.current <= 0)
                 return;
 
+            if (m_movementForce.sqrMagnitude > 1)
+                m_movementForce.Normalize();
             m_movementForce.x += a_value;
-            m_movementForce.x = Mathf.Clamp(m_movementForce.x, -1, 1);
+            if (m_movementForce.sqrMagnitude > 0) m_movementForce.magnitude = m_speed;
         }
 
         public void FaceForward(float a_value, List<int> a_controllerID)
@@ -109,7 +112,6 @@ namespace GameProject
                 return;
 
             m_direction.y -= a_value;
-            m_direction.y = Mathf.Clamp(m_direction.y, -1, 1);
         }
 
         public void FaceRight(float a_value, List<int> a_controllerID)
@@ -118,7 +120,6 @@ namespace GameProject
                 return;
 
             m_direction.x += a_value;
-            m_direction.x = Mathf.Clamp(m_direction.x, -1, 1);
         }
 
         public void Shoot(bool a_pressed, int a_controllerID)
@@ -187,17 +188,12 @@ namespace GameProject
             else if (!HasChild(other))
             {
                 position += a_mtv;
+                m_movementForce += a_mtv.SetMagnitude(m_speed);
             }
         }
 
         void Update(float a_dt)
         {
-            if (m_movementForce.sqrMagnitude > 0)
-            {
-                m_movementForce.magnitude = Mathf.Min(1, m_movementForce.magnitude);
-                m_movementForce *= m_speed;
-            }
-
             if (m_hp.current <= 0)
             {
                 if (m_deathSoundChannel == null)
@@ -248,6 +244,9 @@ namespace GameProject
             position += m_velocity * a_dt;
             m_dodgeForce *= 0.9f;
 
+            Game.main.UI.StrokeWeight(4);
+            Game.main.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + m_movementForce.x, screenPosition.y + m_movementForce.y);
+
             if (m_hp.current > 0)
                 m_movementForce *= 0;
 
@@ -257,7 +256,6 @@ namespace GameProject
                 m_animTimeBuffer -= m_animFrameTime;
                 m_walkAnim.NextFrame();
             }
-
         }
 
         protected override void RenderSelf(GLContext glContext)
@@ -290,6 +288,12 @@ namespace GameProject
                 //m_canvas.Stroke(System.Drawing.Color.Aqua);
                 //m_canvas.StrokeWeight(5);
                 //m_canvas.Line(screenPosition.x - percentage / 2, screenPosition.y + m_sprite.height / 2 + 8, screenPosition.x + percentage / 2, screenPosition.y + m_sprite.height / 2 + 8);
+            }
+
+            Game.main.UI.Text(position.ToString(), 300, 300);
+            if (position.x > 597)
+            {
+                System.Console.WriteLine("blah");
             }
         }
     }

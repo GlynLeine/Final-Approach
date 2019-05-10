@@ -1,7 +1,7 @@
 ﻿
 namespace GLXEngine.Core
 {
-    public abstract class Shape : Transformable
+    public abstract class Shape : GameObject
     {
         public abstract bool Contains(Vector2 a_point, out Vector2 o_mtv);
         public abstract bool Contains(Vector2 a_point);

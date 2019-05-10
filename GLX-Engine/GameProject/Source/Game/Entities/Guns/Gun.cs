@@ -93,7 +93,7 @@ namespace GameProject
 
         protected override Collider createCollider()
         {
-            return new BoxCollider(this, new System.Type[] { GetType() });
+            return null;//new BoxCollider(this, new System.Type[] { GetType() });
         }
 
         public void OnCollision(GameObject other, Vector2 a_mtv)
@@ -228,7 +228,7 @@ namespace GameProject
         {
             Bullet bullet = new Bullet(m_scene, m_owner, m_player, m_damage);
             bullet.SetScaleXY(4);
-            ((Overworld)m_scene).bullets.Add(bullet);
+            //((Overworld)m_scene).bullets.Add(bullet);
 
             Vector2 fwd = new Vector2(m_owner.rotation);
             bullet.position = m_scene.InverseTransformPoint(screenPosition) + fwd * m_barrelLength;

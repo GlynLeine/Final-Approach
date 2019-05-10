@@ -37,7 +37,7 @@ namespace GLXEngine
         }
 
         /// <summary>
-        /// Returns the current system time in milliseconds
+        /// Returns the current system time in seconds
         /// </summary>
         public static int now
         {
@@ -45,7 +45,7 @@ namespace GLXEngine
         }
 
         /// <summary>
-        /// Returns this time in milliseconds since the program started		
+        /// Returns this time in seconds since the program started		
         /// </summary>
         /// <value>
         /// The time.
@@ -56,7 +56,7 @@ namespace GLXEngine
         }
 
         /// <summary>
-        /// Returns the time in milliseconds that has passed since the previous frame
+        /// Returns the time in seconds that has passed since the previous frame
         /// </summary>
         /// <value>
         /// The delta time.

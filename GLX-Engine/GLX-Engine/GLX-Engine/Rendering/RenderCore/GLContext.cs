@@ -30,7 +30,7 @@ namespace GLXEngine.Core
 
         private Game _owner;
 
-        private int _targetFrameRate = 60;
+        private int _targetFrameRate = -1;
         private float _lastFrameTime = 0;
         private float _lastFPSTime = 0;
         private int _frameCount = 0;
@@ -71,7 +71,7 @@ namespace GLXEngine.Core
         //														ClearColor
         //------------------------------------------------------------------------------------------------------------------------
         public static Color clearColor
-            {   get { return m_clearColor; }  set { m_clearColor = value;   GL.ClearColor(m_clearColor.R/255f, m_clearColor.G/255f, m_clearColor.B/255f, m_clearColor.A/255f); } }
+        { get { return m_clearColor; } set { m_clearColor = value; GL.ClearColor(m_clearColor.R / 255f, m_clearColor.G / 255f, m_clearColor.B / 255f, m_clearColor.A / 255f); } }
 
         //------------------------------------------------------------------------------------------------------------------------
         //														setupWindow()
@@ -208,15 +208,15 @@ namespace GLXEngine.Core
             GL.glfwSetTime(0.0);
             do
             {
-                if (_vsyncEnabled || (Time.time - _lastFrameTime > (1000 / _targetFrameRate)))
+                if ((Time.time - _lastFrameTime > 1/_targetFrameRate) || _targetFrameRate < 0 || _vsyncEnabled)
                 {
                     _lastFrameTime = Time.time;
 
                     //actual fps count tracker
                     _frameCount++;
-                    if (Time.time - _lastFPSTime > 1000)
+                    if (Time.time - _lastFPSTime > 1)
                     {
-                        _lastFPS = (int)(_frameCount / ((Time.time - _lastFPSTime) / 1000.0f));
+                        _lastFPS = (int)(_frameCount / (Time.time - _lastFPSTime));
                         _lastFPSTime = Time.time;
                         _frameCount = 0;
                     }
@@ -391,14 +391,7 @@ namespace GLXEngine.Core
             get { return _targetFrameRate; }
             set
             {
-                if (value < 1)
-                {
-                    _targetFrameRate = 1;
-                }
-                else
-                {
-                    _targetFrameRate = value;
-                }
+                _targetFrameRate = value;
             }
         }
 

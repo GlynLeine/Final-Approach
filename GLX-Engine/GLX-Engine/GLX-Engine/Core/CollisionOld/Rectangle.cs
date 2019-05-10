@@ -33,9 +33,9 @@ namespace GLXEngine.Core
         {
             get
             {
-                Vector2 ret = position - new Vector2(m_width * 0.5f, m_height * 0.5f);
+                Vector2 ret =  -new Vector2(m_width * 0.5f, m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret;
+                return ret + position;
             }
             set
             {
@@ -52,9 +52,9 @@ namespace GLXEngine.Core
         {
             get
             {
-                Vector2 ret = position + new Vector2(-m_width * 0.5f, m_height * 0.5f);
+                Vector2 ret = new Vector2(-m_width * 0.5f, m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret;
+                return ret + position;
             }
             set
             {
@@ -71,9 +71,9 @@ namespace GLXEngine.Core
         {
             get
             {
-                Vector2 ret = position + new Vector2(m_width * 0.5f, m_height * 0.5f);
+                Vector2 ret = new Vector2(m_width * 0.5f, m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret;
+                return ret + position;
             }
             set
             {
@@ -90,9 +90,9 @@ namespace GLXEngine.Core
         {
             get
             {
-                Vector2 ret = position + new Vector2(m_width * 0.5f, -m_height * 0.5f);
+                Vector2 ret = new Vector2(m_width * 0.5f, -m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret;
+                return ret + position;
             }
             set
             {

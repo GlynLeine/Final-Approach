@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
 using GLXEngine;								// GLXEngine contains the engine
@@ -6,23 +6,12 @@ using GLXEngine.Core;
 
 namespace GameProject
 {
-    public class Hp
+    public class TestProgram : Game
     {
-        public float max = 100f;
-        public float current = 100f;
-        public float regen = 0.1f;
-    }
 
-    public class Program : Game
-    {
-        public Overworld overworld;
-        public ScorePage scorePage;
-        public DeathScreen deathScreen;
-        public StartScreen startScreen;
+        TestPlayer player;
 
-        public int score = 0;
-
-        public Program() : base(1280, 720, false)        // Create a window that's 800x600 and NOT fullscreen
+        public TestProgram() : base(1280, 720, false)        // Create a window that's 800x600 and NOT fullscreen
         {
             GLContext.clearColor = Color.FromArgb(109, 106, 106);
 
@@ -84,39 +73,25 @@ namespace GameProject
             m_keyInputHandler.ScanObject(this);
             #endregion
 
-            overworld = new Overworld();
-            overworld.m_active = false;
-            AddChild(overworld);
+            player = new TestPlayer(this);
+            player.SetXY(640, 360);
+            AddChild(player);
 
-            scorePage = new ScorePage();
-            scorePage.m_active = false;
-            AddChild(scorePage);
+            WallTile wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
+            wall.SetXY(650, 296);
+            AddChild(wall);
+            wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
+            wall.SetXY(650, 360);
+            AddChild(wall);
+            wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
+            wall.SetXY(650, 424);
+            AddChild(wall);
 
-            deathScreen = new DeathScreen();
-            deathScreen.m_active = false;
-            AddChild(deathScreen);
-
-            startScreen = new StartScreen();
-            startScreen.m_active = true;
-            AddChild(startScreen);
+            BoundsObject floor = new BoundsObject(this, width, 50);
+            floor.SetXY(640, 550);
+            AddChild(floor);
 
             Console.WriteLine(GetDiagnostics());
-        }
-
-        public override void Restart()
-        {
-            score = 0;
-            scorePage.End();
-            overworld.End();
-            deathScreen.End();
-            startScreen.End();
-            startScreen.Restart();
-        }
-
-        public override void End()
-        {
-            overworld.End();
-            deathScreen.Restart();
         }
 
         public void PrintDiagnostics(bool a_pressed)
@@ -138,7 +113,7 @@ namespace GameProject
 
         static void Main()                          // Main() is the first method that's called when the program is run
         {
-            new Program().Start();                  // Create a "MyGame" and start it
+            new TestProgram().Start();                  // Create a "MyGame" and start it
         }
     }
 }

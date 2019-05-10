@@ -43,7 +43,7 @@ namespace GLXEngine.Collision
 
                 if (collisionComponent.m_useComplex)
                 {
-                    m_colliderTree.Query(CalcBroadphaseAreaComplex(position, prevPosition, collisionComponent.m_complexCollisionShape), ref foundEntities);
+                    m_colliderTree.Query(CalcBroadphaseAreaComplex(position, prevPosition, collisionComponent.m_complexCollisionShape), ref foundEntities, 255);
 
                     for (int j = foundEntities.Count - 1; j >= 0; j--)
                     {

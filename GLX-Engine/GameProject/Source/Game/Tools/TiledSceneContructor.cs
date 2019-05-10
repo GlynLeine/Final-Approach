@@ -13,12 +13,12 @@ namespace GameProject
         {
             map = tileMapLoad(a_mapFile);
 
-            a_scene.width = map.Width*map.TileWidth;
-            a_scene.height = map.Height*map.TileHeight;
+            a_scene.width = map.Width * map.TileWidth;
+            a_scene.height = map.Height * map.TileHeight;
 
             int[,] backgroundTiles = tilesLoad(0);
-            int[,] collisionTiles = tilesLoad(1);
             List<TiledObject> tiledObjects = new List<TiledObject>(objectsLoad());
+            List<TiledObject> tilesCircles = new List<TiledObject>(circlesLoad());
             string tileSheetFileName = map.TileSets[0].Source;
             TileSet tileSet = TiledParser.ReadTileSet(tileSheetFileName);
             List<string> objectTypes = new List<string>();
@@ -31,23 +31,8 @@ namespace GameProject
                 {
                     if (backgroundTiles[j, i] == 0) continue;
                     AnimationSprite sprite = new AnimationSprite(tileSet.Image.FileName, tileSet.Columns, tileSet.Rows);
-                    sprite.SetFrame(backgroundTiles[j, i]-1);
+                    sprite.SetFrame(backgroundTiles[j, i] - 1);
                     BackgroundTile tile = new BackgroundTile(a_scene, sprite);
-                    tile.x = j * map.TileWidth;
-                    tile.y = i * map.TileHeight;
-                    a_scene.AddChild(tile);
-                }
-            }
-
-            //load collision tiles
-            for (int i = 0; i < collisionTiles.GetLength(1); i++)
-            {
-                for (int j = 0; j < collisionTiles.GetLength(0); j++)
-                {
-                    if (collisionTiles[j, i] == 0) continue;
-                    AnimationSprite sprite = new AnimationSprite(tileSet.Image.FileName, tileSet.Columns, tileSet.Rows);
-                    sprite.SetFrame(collisionTiles[j, i]-1);
-                    WallTile tile = new WallTile(a_scene, sprite);
                     tile.x = j * map.TileWidth;
                     tile.y = i * map.TileHeight;
                     a_scene.AddChild(tile);
@@ -69,13 +54,21 @@ namespace GameProject
                 else if (objectTypes[i] == "Door")
                 {
                     AnimationSprite sprite = new AnimationSprite(tileSet.Image.FileName, tileSet.Columns, tileSet.Rows);
-                    sprite.SetFrame(tiledObjects[i].GID-1);
+                    sprite.SetFrame(tiledObjects[i].GID - 1);
                     gameObject = new Door(a_scene, sprite, a_scene.m_player as Player, tiledObjects[i].GetIntProperty("ID"));
                 }
                 else if (objectTypes[i] == "Spawnpoint")
                 {
                     a_scene.m_player.x = tiledObjects[i].X;
                     a_scene.m_player.y = tiledObjects[i].Y;
+                }
+                else if (objectTypes[i] == "Collidable")
+                {
+                    BoundsObject obj = new BoundsObject(a_scene, tiledObjects[i].Width, tiledObjects[i].Height);
+                    obj.x = tiledObjects[i].X;
+                    obj.y = tiledObjects[i].Y;
+                    obj.rotation = tiledObjects[i].rotation;
+                    a_scene.AddChild(obj);
                 }
 
                 if (gameObject == null) continue;
@@ -109,6 +102,11 @@ namespace GameProject
         static private TiledObject[] objectsLoad()
         {
             return map.ObjectGroups[0].Objects;
+        }
+
+        static private TiledObject[] circlesLoad()
+        {
+            return map.ObjectGroups[0].Circles;
         }
     }
 }

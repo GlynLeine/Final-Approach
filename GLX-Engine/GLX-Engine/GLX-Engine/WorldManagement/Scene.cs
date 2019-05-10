@@ -128,10 +128,7 @@ namespace GLXEngine
             {
                 m_timeActive += Time.deltaTime;
 
-                Sound.Step();
-
-                if (OnBeforeStep != null)
-                    OnBeforeStep();
+                OnBeforeStep?.Invoke();
 
                 m_keyInputHandler.Step();
 
@@ -143,13 +140,12 @@ namespace GLXEngine
                 m_subScenes.AddRange(m_newScenes);
                 m_newScenes.Clear();
 
-
                 m_updateManager.Step();
                 m_collisionManager.Step();
 
-                if (OnAfterStep != null)
-                    OnAfterStep();
+                Sound.Step();
 
+                OnAfterStep?.Invoke();
             }
         }
 

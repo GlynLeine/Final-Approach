@@ -78,6 +78,7 @@ namespace GLXEngine
         {
             _texture = texture;
             SetBounds(_texture.width, _texture.height);
+            SetOrigin(0, 0);
             setUVs();
         }
 

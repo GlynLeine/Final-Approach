@@ -38,7 +38,7 @@ namespace GameProject
 
         protected override void OnDestroy()
         {
-            ((Overworld)m_scene).bullets.Remove(this);
+           // ((Overworld)m_scene).bullets.Remove(this);
             base.OnDestroy();
         }
 

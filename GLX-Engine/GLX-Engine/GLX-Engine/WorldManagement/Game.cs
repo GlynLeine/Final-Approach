@@ -19,6 +19,8 @@ namespace GLXEngine
 
         public readonly bool PixelArt;
 
+        public EasyDraw UI;
+
         //------------------------------------------------------------------------------------------------------------------------
         //														Game()
         //------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +37,7 @@ namespace GLXEngine
         /// <param name='fullScreen'>
         /// If set to <c>true</c> the application will run in fullscreen mode.
         /// </param>
-        public Game(int pWidth, int pHeight, bool pFullScreen, bool pVSync = true, int pRealWidth = -1, int pRealHeight = -1, bool pPixelArt = false) : base(new AARectangle(-pWidth*0.5f, -pHeight*0.5f, pWidth*2f, pHeight*2f))
+        public Game(int pWidth, int pHeight, bool pFullScreen, bool pVSync = true, int pRealWidth = -1, int pRealHeight = -1, bool pPixelArt = false) : base(new AARectangle(0, 0, pWidth, pHeight))//-pWidth * 0.5f, -pHeight * 0.5f, pWidth * 2f, pHeight * 2f))
         {
             if (pRealWidth <= 0)
             {
@@ -68,6 +70,9 @@ namespace GLXEngine
 
                 width = pWidth;
                 height = pHeight;
+
+                UI = new EasyDraw(width, height);
+                UI.autoClear = true;
 
                 //register ourselves for updates
                 Add(this);
@@ -133,6 +138,7 @@ namespace GLXEngine
         public override void Render(GLContext glContext)
         {
             base.Render(glContext);
+            UI.Render(glContext);
             if (OnAfterRender != null && recurse)
             {
                 recurse = false;
@@ -204,6 +210,6 @@ namespace GLXEngine
             }
         }
 
-     }
+    }
 }
 
