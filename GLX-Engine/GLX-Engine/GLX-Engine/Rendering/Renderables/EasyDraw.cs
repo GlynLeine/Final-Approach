@@ -18,8 +18,8 @@ namespace GLXEngine
 
 		public CenterMode HorizontalTextAlign=CenterMode.Min;
 		public CenterMode VerticalTextAlign=CenterMode.Max;
-		public CenterMode HorizontalShapeAlign=CenterMode.Center;
-		public CenterMode VerticalShapeAlign=CenterMode.Center;
+		public CenterMode HorizontalShapeAlign=CenterMode.Min;
+		public CenterMode VerticalShapeAlign=CenterMode.Min;
 
         public bool autoClear = false;
         public Color clearColor = Color.FromArgb(0, 0, 0, 0);

@@ -51,16 +51,6 @@ namespace GLXEngine.Core
             return (x + "," + y + "," + m_width + "," + m_height);
         }
 
-        public override bool Contains(Vector2 a_point, out Vector2 o_mtv)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool Overlaps(Shape a_other, out Vector2 o_mtv)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool Overlaps(Shape a_other)
         {
             Type otherType = a_other.GetType();

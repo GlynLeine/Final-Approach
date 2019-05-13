@@ -27,19 +27,38 @@ namespace GLXEngine
         /// <param name='bitmap'>
         /// Bitmap.
         /// </param>
-        public Sprite(System.Drawing.Bitmap bitmap)
+        /// 
+        public Sprite(Scene a_scene, System.Drawing.Bitmap bitmap) : base(a_scene, bitmap.Width, bitmap.Height)
         {
             name = "BMP" + bitmap.Width + "x" + bitmap.Height;
             initializeFromTexture(new Texture2D(bitmap));
         }
 
-        public Sprite(Texture2D a_texture2D)
+        public Sprite(Scene a_scene, Texture2D a_texture2D) : base(a_scene, a_texture2D.width, a_texture2D.height)
         {
             name = a_texture2D.filename;
             initializeFromTexture(a_texture2D);
         }
 
-        public Sprite(int width, int height)
+        public Sprite(Scene a_scene, int width, int height) : base(a_scene, width, height)
+        {
+            name = "BMP" + width + "x" + height;
+            initializeFromTexture(new Texture2D(width, height));
+        }
+
+        public Sprite(System.Drawing.Bitmap bitmap) : base(Game.main, bitmap.Width, bitmap.Height)
+        {
+            name = "BMP" + bitmap.Width + "x" + bitmap.Height;
+            initializeFromTexture(new Texture2D(bitmap));
+        }
+
+        public Sprite(Texture2D a_texture2D) : base(Game.main, a_texture2D.width, a_texture2D.height)
+        {
+            name = a_texture2D.filename;
+            initializeFromTexture(a_texture2D);
+        }
+
+        public Sprite(int width, int height) : base(Game.main, width, height)
         {
             name = "BMP" + width + "x" + height;
             initializeFromTexture(new Texture2D(width, height));
@@ -51,6 +70,11 @@ namespace GLXEngine
         protected override void OnDestroy()
         {
             if (_texture != null) _texture.Dispose();
+        }
+
+        protected override Collider createCollider()
+        {
+            return null;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +89,12 @@ namespace GLXEngine
         /// <param name='filename'>
         /// The name of the file that should be loaded.
         /// </param>
-        public Sprite(string filename, bool keepInCache = false, Scene a_scene = null)
+        public Sprite(Scene a_scene, string filename, bool keepInCache = true) : base(a_scene, Texture2D.GetInstance(filename, keepInCache).width, Texture2D.GetInstance(filename, keepInCache).height)
+        {
+            name = filename;
+            initializeFromTexture(Texture2D.GetInstance(filename, keepInCache));
+        }
+        public Sprite(string filename, bool keepInCache = true) : base(Game.main, Texture2D.GetInstance(filename, keepInCache).width, Texture2D.GetInstance(filename, keepInCache).height)
         {
             name = filename;
             initializeFromTexture(Texture2D.GetInstance(filename, keepInCache));
@@ -77,9 +106,8 @@ namespace GLXEngine
         protected void initializeFromTexture(Texture2D texture)
         {
             _texture = texture;
-            SetBounds(_texture.width, _texture.height);
-            SetOrigin(0, 0);
             setUVs();
+            Initialise();
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -152,7 +180,7 @@ namespace GLXEngine
         {
             if (game != null)
             {
-                Vector2[] bounds = GetExtents();
+                Vector2[] bounds = GetHull();
                 float maxX = float.MinValue;
                 float maxY = float.MinValue;
                 float minX = float.MaxValue;
@@ -164,6 +192,13 @@ namespace GLXEngine
                     if (bounds[i].y > maxY) maxY = bounds[i].y;
                     if (bounds[i].y < minY) minY = bounds[i].y;
                 }
+
+                game.UI.Stroke(0);
+                float w = game.UI.pen.Width;
+                game.UI.StrokeWeight(10);
+                game.UI.Rect(game.RenderRange.p_left, game.RenderRange.p_top, game.RenderRange.p_right - game.RenderRange.p_left, game.RenderRange.p_bottom - game.RenderRange.p_top);
+                game.UI.StrokeWeight(w);
+
                 bool test = (maxX < game.RenderRange.p_left) || (maxY < game.RenderRange.p_top) || (minX >= game.RenderRange.p_right) || (minY >= game.RenderRange.p_bottom);
                 if (test == false)
                 {
@@ -177,6 +212,10 @@ namespace GLXEngine
                     glContext.SetColor(1, 1, 1, 1);
                     _texture.Unbind();
                     if (blendMode != null) BlendMode.NORMAL.enable();
+                }
+                else
+                {
+                    Console.WriteLine("blah");
                 }
             }
         }

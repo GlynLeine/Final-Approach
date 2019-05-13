@@ -87,6 +87,8 @@ namespace GLXEngine
 
             m_gameObjectsContained = new List<GameObject>();
             m_dimensions = new Vector2i();
+
+            Initialise();
         }
 
         public virtual void Start()

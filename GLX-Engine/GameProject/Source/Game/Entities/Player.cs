@@ -82,7 +82,7 @@ namespace GameProject
 
         protected override Collider createCollider()
         {
-            return new BoxCollider(m_walkAnim);//, ref m_canvas);
+            return new Collider(this, m_walkAnim);
         }
 
         public void MoveForward(float a_value, List<int> a_controllerID)
@@ -190,6 +190,9 @@ namespace GameProject
                 position += a_mtv;
                 m_movementForce += a_mtv.SetMagnitude(m_speed);
             }
+
+            if(float.IsNaN(position.x))
+                throw new System.Exception();
         }
 
         void Update(float a_dt)

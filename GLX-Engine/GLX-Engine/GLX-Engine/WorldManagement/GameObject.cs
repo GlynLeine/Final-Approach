@@ -20,6 +20,8 @@ namespace GLXEngine
 
         public bool visible = true;
 
+        private bool m_initialised = false;
+
         //------------------------------------------------------------------------------------------------------------------------
         //														GameObject()
         //------------------------------------------------------------------------------------------------------------------------
@@ -30,19 +32,25 @@ namespace GLXEngine
         /// </summary>
         public GameObject()
         {
-            _collider = createCollider();
             if (Game.main != null)
             {
-                Game.main.Add(this);
                 m_scene = Game.main;
             }
         }
 
         public GameObject(Scene a_scene)
         {
-            _collider = createCollider();
-            a_scene.Add(this);
             m_scene = a_scene;
+        }
+
+        public void Initialise()
+        {
+            if(m_initialised)
+                return;
+            m_initialised = true;
+            _collider = createCollider();
+            if(m_scene != null)
+                m_scene.Add(this);
         }
 
         /// <summary>
@@ -78,7 +86,7 @@ namespace GLXEngine
         public Collider collider
         {
             get { return _collider; }
-            set { _collider = value;}
+            set { _collider = value; }
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -156,6 +164,9 @@ namespace GLXEngine
         /// </param>
         public virtual void Render(GLContext glContext)
         {
+            if(!m_initialised)
+                throw new ApplicationException("This object has not had it's Initialise() function called.");
+
             if (visible)
             {
                 glContext.PushMatrix(matrix);

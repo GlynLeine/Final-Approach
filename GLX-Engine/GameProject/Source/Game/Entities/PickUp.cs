@@ -27,10 +27,5 @@ namespace GameProject
 
             name = a_name;
         }
-
-        protected override Collider createCollider()
-        {
-            return new BoxCollider(this);
-        }
     }
 }

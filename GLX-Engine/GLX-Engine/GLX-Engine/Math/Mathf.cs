@@ -33,7 +33,7 @@ namespace GLXEngine
         /// </summary>
         public static float Acos(float f)
         {
-            return (float)Math.Acos(f);
+            return (float)Math.Round(Math.Acos(f < -1 ? f + 2f : (f > 1 ? f - 2 : f)), 6);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace GLXEngine
         /// </summary>
         public static float Atan(float f)
         {
-            return (float)Math.Atan(f);
+            return (float)Math.Round(Math.Atan(f), 6);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace GLXEngine
         /// </summary>
         public static float Atan2(float y, float x)
         {
-            return (float)Math.Atan2(y, x);
+            return (float)Math.Round(Math.Atan2(y, x), 6);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace GLXEngine
         /// </summary>
         public static float Cos(float f)
         {
-            return (float)Math.Round(Math.Cos(f), 6);
+            return (float)Math.Round(Math.Cos(f < -PI*2 ? f + PI*2 : (f > PI*2 ? f - PI*2 : f)), 6);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace GLXEngine
         /// </summary>
         public static float Sqrt(float f)
         {
-            return (float)Math.Sqrt(f);
+            return (float)Math.Round(Math.Sqrt(f), 6);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace GLXEngine
         /// </summary>
         public static float Tan(float f)
         {
-            return (float)Math.Tan(f);
+            return (float)Math.Round(Math.Tan(f), 6);
         }
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace GameProject
             {
                 m_walkAnim = new AnimationSprite("Textures/enemyBlackWalkAnim.png", 6, 1);
                 m_deadSprite = new Sprite("Textures/enemyBlackDead.png");
-                collider = new BoxCollider(m_walkAnim);
+                collider = new Collider(this, m_walkAnim);
             }
 
             m_walkAnim.SetOrigin(m_walkAnim.width / 2, m_walkAnim.height / 2);
@@ -65,7 +65,7 @@ namespace GameProject
 
         protected override Collider createCollider()
         {
-            return new BoxCollider(m_walkAnim);//, ref m_canvas);
+            return new Collider(this, m_walkAnim);
         }
 
         public void OnCollision(GameObject other, Vector2 a_mtv)

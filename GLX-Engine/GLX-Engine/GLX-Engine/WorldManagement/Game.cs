@@ -1,7 +1,6 @@
 using GLXEngine.Core;
-using GLXEngine.Managers;
+using GLXEngine.Rendering.UI;
 using System;
-using System.Collections.Generic;
 
 namespace GLXEngine
 {
@@ -19,7 +18,7 @@ namespace GLXEngine
 
         public readonly bool PixelArt;
 
-        public EasyDraw UI;
+        public UIOverlay UI;
 
         //------------------------------------------------------------------------------------------------------------------------
         //														Game()
@@ -71,7 +70,7 @@ namespace GLXEngine
                 width = pWidth;
                 height = pHeight;
 
-                UI = new EasyDraw(width, height);
+                UI = new UIOverlay(width, height);
                 UI.autoClear = true;
 
                 //register ourselves for updates
