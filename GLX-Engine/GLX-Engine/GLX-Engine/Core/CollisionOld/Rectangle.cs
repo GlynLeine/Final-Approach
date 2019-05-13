@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace GLXEngine.Core
 {
-    public class Rectangle : Shape
+    public class Rectangle : CollisionShape
     {
         public float m_width, m_height;
 
         //------------------------------------------------------------------------------------------------------------------------
         //														Rectangle()
         //------------------------------------------------------------------------------------------------------------------------
-        public Rectangle(float a_x, float a_y, float a_width, float a_height)
+        public Rectangle(float a_x, float a_y, float a_width, float a_height, GameObject a_parent) : base(a_parent)
         {
             this.x = a_x;
             this.y = a_y;
@@ -18,7 +18,7 @@ namespace GLXEngine.Core
             this.m_height = a_height;
         }
 
-        public Rectangle(Rectangle a_source)
+        public Rectangle(Rectangle a_source) : base(a_source.m_parent)
         {
             x = a_source.x;
             y = a_source.y;
@@ -29,21 +29,23 @@ namespace GLXEngine.Core
         //------------------------------------------------------------------------------------------------------------------------
         //														Properties()
         //------------------------------------------------------------------------------------------------------------------------
+        #region Transformed corners
         public Vector2 p_topLeft
         {
             get
             {
-                Vector2 ret =  -new Vector2(m_width * 0.5f, m_height * 0.5f);
+                Vector2 ret = -new Vector2(m_width * 0.5f, m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret + position;
+                return m_parent.TransformPoint(ret + position);
             }
             set
             {
                 Vector2 topLeft = p_topLeft;
-                float toRot = value.angle - topLeft.angle;
+                Vector2 target = InverseTransformPoint(value.x, value.y);
+                float toRot = target.angle - topLeft.angle;
                 rotation += toRot;
                 topLeft.angle += toRot;
-                Vector2 transl = value - topLeft;
+                Vector2 transl = target - topLeft;
                 position += transl;
             }
         }
@@ -54,15 +56,16 @@ namespace GLXEngine.Core
             {
                 Vector2 ret = new Vector2(-m_width * 0.5f, m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret + position;
+                return m_parent.TransformPoint(ret + position);
             }
             set
             {
                 Vector2 bottomLeft = p_bottomLeft;
-                float toRot = value.angle - bottomLeft.angle;
+                Vector2 target = InverseTransformPoint(value.x, value.y);
+                float toRot = target.angle - bottomLeft.angle;
                 rotation += toRot;
                 bottomLeft.angle += toRot;
-                Vector2 transl = value - bottomLeft;
+                Vector2 transl = target - bottomLeft;
                 position += transl;
             }
         }
@@ -73,15 +76,16 @@ namespace GLXEngine.Core
             {
                 Vector2 ret = new Vector2(m_width * 0.5f, m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret + position;
+                return m_parent.TransformPoint(ret + position);
             }
             set
             {
                 Vector2 bottomRight = p_bottomRight;
-                float toRot = value.angle - bottomRight.angle;
+                Vector2 target = InverseTransformPoint(value.x, value.y);
+                float toRot = target.angle - bottomRight.angle;
                 rotation += toRot;
                 bottomRight.angle += toRot;
-                Vector2 transl = value - bottomRight;
+                Vector2 transl = target - bottomRight;
                 position += transl;
             }
         }
@@ -92,11 +96,90 @@ namespace GLXEngine.Core
             {
                 Vector2 ret = new Vector2(m_width * 0.5f, -m_height * 0.5f);
                 ret.Rotate(rotation);
-                return ret + position;
+                return m_parent.TransformPoint(ret + position);
             }
             set
             {
                 Vector2 topRight = p_topRight;
+                Vector2 target = InverseTransformPoint(value.x, value.y);
+                float toRot = target.angle - topRight.angle;
+                rotation += toRot;
+                topRight.angle += toRot;
+                Vector2 transl = target - topRight;
+                position += transl;
+            }
+        }
+        #endregion
+
+        #region Untransformed corners
+        public Vector2 p_topLeftUT
+        {
+            get
+            {
+                Vector2 ret = -new Vector2(m_width * 0.5f, m_height * 0.5f);
+                ret.Rotate(rotation);
+                return ret + position;
+            }
+            set
+            {
+                Vector2 topLeft = p_topLeftUT;
+                float toRot = value.angle - topLeft.angle;
+                rotation += toRot;
+                topLeft.angle += toRot;
+                Vector2 transl = value - topLeft;
+                position += transl;
+            }
+        }
+
+        public Vector2 p_bottomLeftUT
+        {
+            get
+            {
+                Vector2 ret = new Vector2(-m_width * 0.5f, m_height * 0.5f);
+                ret.Rotate(rotation);
+                return ret + position;
+            }
+            set
+            {
+                Vector2 bottomLeft = p_bottomLeftUT;
+                float toRot = value.angle - bottomLeft.angle;
+                rotation += toRot;
+                bottomLeft.angle += toRot;
+                Vector2 transl = value - bottomLeft;
+                position += transl;
+            }
+        }
+
+        public Vector2 p_bottomRightUT
+        {
+            get
+            {
+                Vector2 ret = new Vector2(m_width * 0.5f, m_height * 0.5f);
+                ret.Rotate(rotation);
+                return ret + position;
+            }
+            set
+            {
+                Vector2 bottomRight = p_bottomRightUT;
+                float toRot = value.angle - bottomRight.angle;
+                rotation += toRot;
+                bottomRight.angle += toRot;
+                Vector2 transl = value - bottomRight;
+                position += transl;
+            }
+        }
+
+        public Vector2 p_topRightUT
+        {
+            get
+            {
+                Vector2 ret = new Vector2(m_width * 0.5f, -m_height * 0.5f);
+                ret.Rotate(rotation);
+                return ret + position;
+            }
+            set
+            {
+                Vector2 topRight = p_topRightUT;
                 float toRot = value.angle - topRight.angle;
                 rotation += toRot;
                 topRight.angle += toRot;
@@ -104,8 +187,20 @@ namespace GLXEngine.Core
                 position += transl;
             }
         }
+        #endregion
 
+        #region Hull types
         public Vector2[] p_hull
+        {
+            get
+            {
+                Vector2[] ret = { p_topLeftUT, p_topRightUT, p_bottomRightUT, p_bottomLeftUT };
+                return ret;
+            }
+            private set { }
+        }
+
+        public Vector2[] p_extends
         {
             get
             {
@@ -114,7 +209,9 @@ namespace GLXEngine.Core
             }
             private set { }
         }
+        #endregion
 
+        #region Transformed sides
         public float p_left
         {
             get
@@ -167,6 +264,17 @@ namespace GLXEngine.Core
                 br.y = value;
                 p_bottomRight = br;
             }
+        }
+        #endregion
+
+        public override float GetMaxReach()
+        {
+            return p_topLeftUT.magnitude;
+        }
+
+        public override Vector2 ScreenPos()
+        {
+            return m_parent.TransformPoint(position);
         }
 
         public override bool Contains(Vector2 a_point, out Vector2 o_mtv)
@@ -240,26 +348,53 @@ namespace GLXEngine.Core
 
         public bool Overlaps(Rectangle a_other, out Vector2 o_mtv)
         {
-            if (rotation % 90 == 0)
-                if (a_other.rotation % 90 == 0)
+            Vector2[] hullA = p_extends;
+            Vector2[] hullB = a_other.p_extends;
+
+            Game.main.UI.Stroke(0, 255, 0);
+            Game.main.UI.Quad(hullA[0].x, hullA[0].y, hullA[1].x, hullA[1].y, hullA[2].x, hullA[2].y, hullA[3].x, hullA[3].y);
+            Game.main.UI.Quad(hullB[0].x, hullB[0].y, hullB[1].x, hullB[1].y, hullB[2].x, hullB[2].y, hullB[3].x, hullB[3].y);
+
+            float rotA = rotation + m_parent.TransformPoint(1, 0).angle;
+            float rotB = a_other.rotation + a_other.m_parent.TransformPoint(1, 0).angle;
+            if (rotA % 90 == 0 && rotB % 90 == 0)
+            {
+                rotation -= rotA;
+                a_other.rotation -= rotB;
+                o_mtv = new Vector2();
+                if (a_other.p_left <= p_right && a_other.p_right >= p_left && a_other.p_bottom >= p_top && a_other.p_top <= p_bottom)
                 {
-                    o_mtv = new Vector2();
-                    if (a_other.p_left < p_right && a_other.p_right > p_left && a_other.p_bottom > p_top && a_other.p_top < p_bottom)
+                    float mag = a_other.p_left - p_right;
+                    bool horizontal = true;
+                    if (Mathf.Abs(mag) > Mathf.Abs(a_other.p_right - p_left))
                     {
-                        o_mtv.x = a_other.p_left - p_right;
-                        if (Mathf.Abs(o_mtv.x) > Mathf.Abs(a_other.p_right - p_left))
-                            o_mtv.x = a_other.p_right - p_left;
-                        if (Mathf.Abs(o_mtv.x) > Mathf.Abs(a_other.p_bottom - p_top))
-                            o_mtv = new Vector2(0, a_other.p_bottom - p_top);
-                        if (Mathf.Abs(o_mtv.y) > Mathf.Abs(a_other.p_top - p_bottom))
-                            o_mtv.y = a_other.p_top - p_bottom;
-                        return true;
+                        mag = a_other.p_right - p_left;
                     }
-                    return false;
+                    if (Mathf.Abs(mag) > Mathf.Abs(a_other.p_bottom - p_top))
+                    {
+                        horizontal = false;
+                        mag = a_other.p_bottom - p_top;
+                    }
+                    if (Mathf.Abs(mag) > Mathf.Abs(a_other.p_top - p_bottom))
+                    {
+                        horizontal = false;
+                        mag = a_other.p_top - p_bottom;
+                    }
+                    if (horizontal)
+                        o_mtv.x = mag;
+                    else
+                        o_mtv.y = mag;
+
+                    rotation += rotA;
+                    a_other.rotation += rotB;
+
+                    return true;
                 }
 
-            Vector2[] hullA = p_hull;
-            Vector2[] hullB = a_other.p_hull;
+                rotation += rotA;
+                a_other.rotation += rotB;
+                return false;
+            }
 
             List<Vector2> axes = new List<Vector2>();
 

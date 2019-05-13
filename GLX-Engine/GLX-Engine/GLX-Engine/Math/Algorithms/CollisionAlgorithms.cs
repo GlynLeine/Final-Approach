@@ -8,13 +8,13 @@ namespace GLXEngine
     {
         public static AARectangle CalcBroadphaseAreaComplex(Vector2 a_position, Vector2 a_prevPosition, ComplexCollisionShape a_shape)
         {
-            Vector2[] hullA = a_shape.m_points.ToArray();
+            Vector2[] hullB = a_shape.m_points.ToArray();
 
             Vector2 velocityA = a_position - a_prevPosition;
 
             float extendA = 0;
 
-            foreach (Vector2 point in hullA)
+            foreach (Vector2 point in hullB)
             {
                 if (Mathf.Abs(point.x) > extendA)
                     extendA = point.x;
@@ -171,6 +171,7 @@ namespace GLXEngine
                     if (projection > maxA)
                         maxA = projection;
                 }
+
                 for (int j = 0; j < hullB.Length; j++)
                 {
                     float projection = (hullB[j]).Dot(axes[i]);

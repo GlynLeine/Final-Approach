@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using GLXEngine.Core;
 
 
@@ -11,18 +11,26 @@ namespace GLXEngine
 
         public BoundsObject(Scene a_scene, float a_width = 0, float a_height = 0) : base(a_scene)
         {
-            m_bounds = new Rectangle(0, 0, a_width, a_height);
-            m_bounds.x = a_width / 2;
-            m_bounds.y = a_height / 2;
+            m_bounds = new Rectangle(a_width / 2, a_height / 2, a_width, a_height, this);
+            Initialise();
         }
 
-        protected BoundsObject()
-        {
-        }
+        protected BoundsObject() { }
 
         protected override Collider createCollider()
         {
-            return new BoxCollider(this);
+            List<CollisionShape> collisionShapes = new List<CollisionShape>();
+            int xSplit = Mathf.Ceiling(m_bounds.m_width / 64f);
+            int ySplit = Mathf.Ceiling(m_bounds.m_height / 64f);
+
+            float rWidth = m_bounds.m_width / xSplit;
+            float rHeight = m_bounds.m_height / ySplit;
+
+            for (int i = 0; i < xSplit; i++)
+                for (int j = 0; j < ySplit; j++)
+                    collisionShapes.Add(new Rectangle(i * rWidth + rWidth / 2f - m_bounds.x, j * rHeight + rHeight / 2f - m_bounds.y, rWidth, rHeight, this));
+
+            return new Collider(this, collisionShapes);
         }
 
         public void SetBounds(float a_width, float a_height)
@@ -33,7 +41,32 @@ namespace GLXEngine
                 m_bounds.m_height = a_height;
             }
             else
-                m_bounds = new Rectangle(0, 0, a_width, a_height);
+                m_bounds = new Rectangle(0, 0, a_width, a_height, this);
+        }
+
+        public Rectangle GetBounds()
+        {
+            return m_bounds;
+        }
+
+        public bool Overlaps(Shape a_other)
+        {
+            return m_bounds.Overlaps(a_other);
+        }
+
+        public bool Overlaps(Shape a_other, out Vector2 o_mtv)
+        {
+            return m_bounds.Overlaps(a_other, out o_mtv);
+        }
+
+        public bool Overlaps(BoundsObject a_other)
+        {
+            return m_bounds.Overlaps(a_other.m_bounds);
+        }
+
+        public bool Overlaps(BoundsObject a_other, out Vector2 o_mtv)
+        {
+            return m_bounds.Overlaps(a_other.m_bounds, out o_mtv);
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -79,21 +112,18 @@ namespace GLXEngine
         //------------------------------------------------------------------------------------------------------------------------
         public Vector2[] GetHull()
         {
-            return new Vector2[4] {
-               new Vector2(m_bounds.p_left, m_bounds.p_top),
-               new Vector2(m_bounds.p_right, m_bounds.p_top),
-               new Vector2(m_bounds.p_right, m_bounds.p_bottom),
-               new Vector2(m_bounds.p_left, m_bounds.p_bottom)
-            };
+            return m_bounds.p_hull;
         }
         public float[] GetArea()
         {
-            return new float[8] {
-               m_bounds.p_left, m_bounds.p_top,
-               m_bounds.p_right, m_bounds.p_top,
-               m_bounds.p_right, m_bounds.p_bottom,
-               m_bounds.p_left, m_bounds.p_bottom
-            };
+            Vector2[] hull = m_bounds.p_hull;
+            float[] ret = new float[hull.Length * 2];
+            for (int i = 0; i < hull.Length; i++)
+            {
+                ret[i * 2] = hull[i].x;
+                ret[i * 2 + 1] = hull[i].y;
+            }
+            return ret;
         }
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -129,8 +159,10 @@ namespace GLXEngine
         /// </param>
         public void SetOrigin(float x, float y)
         {
-            m_bounds.x = x + width / 2;
-            m_bounds.y = y + height / 2;
+            Vector2 newPos = new Vector2(-x + width / 2, -y + height / 2);
+            if (collider != null)
+                collider.position = newPos;
+            m_bounds.position = newPos;
         }
 
     }

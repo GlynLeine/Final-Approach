@@ -25,7 +25,7 @@ namespace GameProject
 
         protected override Collider createCollider()
         {
-            return new BoxCollider(m_sprite);
+            return new Collider(this, m_sprite);
         }
 
         public void OnCollision(GameObject other, Vector2 a_mtv)

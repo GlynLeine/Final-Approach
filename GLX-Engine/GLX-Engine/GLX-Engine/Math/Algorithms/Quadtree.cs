@@ -24,6 +24,8 @@ namespace GLXEngine
 
         List<Point> m_points;
 
+        List<Point> m_allContained;
+
         public AARectangle m_boundary;
         public int m_capacity;
         bool m_divided;
@@ -32,15 +34,7 @@ namespace GLXEngine
         {
             get
             {
-                int count = m_points.Count;
-                if (m_divided)
-                {
-                    count += m_northeast.Count;
-                    count += m_northwest.Count;
-                    count += m_southeast.Count;
-                    count += m_southwest.Count;
-                }
-                return count;
+                return m_allContained.Count;
             }
             private set { }
 
@@ -57,6 +51,7 @@ namespace GLXEngine
             m_boundary = a_boundary;
 
             m_points = new List<Point>();
+            m_allContained = new List<Point>();
             m_divided = false;
         }
 
@@ -65,6 +60,7 @@ namespace GLXEngine
             m_capacity = a_source.m_capacity;
             m_boundary = new AARectangle(a_source.m_boundary);
             m_points = new List<Point>(a_source.m_points);
+            m_allContained = new List<Point>(a_source.m_allContained);
             m_divided = a_source.m_divided;
             if (a_source.m_divided)
             {
@@ -91,6 +87,16 @@ namespace GLXEngine
             AARectangle sw = new AARectangle(x, y + h, w, h);
             m_southwest = new QuadTree(sw, m_capacity);
 
+            foreach (Point p in m_points)
+            {
+                m_northeast.Insert(p);
+                m_northwest.Insert(p);
+                m_southeast.Insert(p);
+                m_southwest.Insert(p);
+            }
+
+            m_points.Clear();
+
             m_divided = true;
         }
 
@@ -101,7 +107,9 @@ namespace GLXEngine
                 return false;
             }
 
-            if (m_points.Count < m_capacity)
+            m_allContained.Add(a_point);
+
+            if (m_points.Count < m_capacity && !m_divided)
             {
                 m_points.Add(a_point);
                 return true;
@@ -119,9 +127,9 @@ namespace GLXEngine
         public List<Point> Query(Shape range, ref List<Point> found, int color)
         {
             Game.main.UI.NoFill();
-            Game.main.UI.Stroke(color, 0, 255-color);
+            Game.main.UI.Stroke(color, 0, 255 - color);
             Game.main.UI.StrokeWeight(5);
-            Game.main.UI.Rect(m_boundary.x + m_boundary.m_width/2, m_boundary.y + m_boundary.m_height/2, m_boundary.m_width, m_boundary.m_height);
+            Game.main.UI.Rect(m_boundary.x, m_boundary.y, m_boundary.m_width, m_boundary.m_height);
             if (!range.Overlaps(m_boundary))
             {
                 return found;
@@ -163,7 +171,7 @@ namespace GLXEngine
             float limit = 16;
             while (true)
             {
-                Circle range = new Circle(a_point.x, a_point.y, radius);
+                Circle range = new Circle(a_point.x, a_point.y, radius, null);
                 List<Point> points = new List<Point>();
                 points = Query(range, ref points, 255);
                 if (points.Count == a_count)

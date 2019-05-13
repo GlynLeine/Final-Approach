@@ -2,9 +2,22 @@
 
 namespace GLXEngine.Core
 {
-    public class Line : Shape
+    public class Line : CollisionShape
     {
         public float m_length;
+
+        public Line(Vector2 a_position, float a_angle, float a_length, GameObject a_parent) : base(a_parent)
+        {
+            position = a_position;
+            rotation = a_angle;
+            m_length = a_length;
+        }
+
+        public Line(Vector2 a_start, Vector2 a_end, GameObject a_parent) : base(a_parent)
+        {
+            start = a_start;
+            end = a_end;
+        }
 
         public Vector2 start
         {
@@ -118,12 +131,12 @@ namespace GLXEngine.Core
 
             if (0 <= colScalarB && colScalarB <= 1 && 0 <= colScalarA && colScalarA <= 1)
             {
-                if(colScalarA*line.magnitude < colScalarB*otherLine.magnitude)
+                if (colScalarA * line.magnitude < colScalarB * otherLine.magnitude)
                 {
-                    o_mtv = line*colScalarA;
+                    o_mtv = line * colScalarA;
                     return true;
                 }
-                o_mtv = -(otherLine*colScalarB);
+                o_mtv = -(otherLine * colScalarB);
                 return true;
             }
             return false;
@@ -147,6 +160,16 @@ namespace GLXEngine.Core
             }
 
             return false;
+        }
+
+        public override float GetMaxReach()
+        {
+            return m_length / 2f;
+        }
+
+        public override Vector2 ScreenPos()
+        {
+            return m_parent.TransformPoint(position);
         }
     }
 }

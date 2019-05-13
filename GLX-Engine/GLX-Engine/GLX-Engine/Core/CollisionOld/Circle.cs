@@ -2,13 +2,13 @@
 
 namespace GLXEngine.Core
 {
-    public class Circle : Shape
+    public class Circle : CollisionShape
     {
         public float radius;
         //------------------------------------------------------------------------------------------------------------------------
         //														Circle()
         //------------------------------------------------------------------------------------------------------------------------
-        public Circle(float x, float y, float radius)
+        public Circle(float x, float y, float radius, GameObject a_parent) : base(a_parent)
         {
             this.x = x;
             this.y = y;
@@ -33,6 +33,11 @@ namespace GLXEngine.Core
         public override bool Contains(Vector2 a_point)
         {
             return Vector2.Distance(position, a_point) <= radius;
+        }
+
+        public override float GetMaxReach()
+        {
+            return radius;
         }
 
         public override bool Overlaps(Shape a_other, out Vector2 o_mtv)
@@ -157,7 +162,12 @@ namespace GLXEngine.Core
                 return true;
 
             // intersection on the edge of the circle
-            return edges <= radius*radius;
+            return edges <= radius * radius;
+        }
+
+        public override Vector2 ScreenPos()
+        {
+            return m_parent.TransformPoint(position);
         }
 
         //------------------------------------------------------------------------------------------------------------------------

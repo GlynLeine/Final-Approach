@@ -13,18 +13,20 @@ namespace GameProject
 
         Vector2 m_movementDirection = new Vector2();
 
-        public Sprite m_sprite = new Sprite("Textures/Rectangle.png");
+        public Sprite m_sprite;
 
         public TestPlayer(Scene a_scene) : base(a_scene)
         {
+            m_sprite = new Sprite("Textures/Rectangle.png");
             m_sprite.SetOrigin(m_sprite.width / 2, m_sprite.height / 2);
-            rotation += 45;
+            m_sprite.rotation += 45;
             AddChild(m_sprite);
+            Initialise();
         }
 
         protected override Collider createCollider()
         {
-            return new BoxCollider(m_sprite);
+            return new Collider(this, m_sprite);
         }
 
         public void MoveForward(float a_value, List<int> a_controllerID)
@@ -51,8 +53,9 @@ namespace GameProject
         {
             if (!HasChild(other))
             {
+                game.UI.Stroke(255, 0, 0);
+                game.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + a_mtv.x, screenPosition.y + a_mtv.y);
                 position += a_mtv;
-                m_movementDirection += a_mtv.normal;
             }
         }
 
@@ -66,12 +69,15 @@ namespace GameProject
             {
                 m_movementDirection.SetMagnitude(m_speed);
             }
+
             m_velocity = m_movementDirection;
 
             position += m_velocity * a_dt;
 
             Game.main.UI.StrokeWeight(4);
             Game.main.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + m_velocity.x, screenPosition.y + m_velocity.y);
+            Game.main.UI.Stroke(0, 255, 0);
+            Game.main.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + m_velocity.x * a_dt, screenPosition.y + m_velocity.y * a_dt);
 
             m_movementDirection *= 0;
         }

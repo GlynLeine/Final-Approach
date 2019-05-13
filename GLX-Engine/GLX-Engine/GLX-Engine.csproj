@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GLX-Engine\Core\CollisionOld\AARectangle.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\CollisionShape.cs" />
     <Compile Include="GLX-Engine\Core\CollisionOld\Line.cs" />
     <Compile Include="GLX-Engine\Input\ArduinoInterface.cs" />
     <Compile Include="GLX-Engine\Math\Algorithms\Boid.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="GLX-Engine\Physics\Collision\ComplexCollisionShape.cs" />
     <Compile Include="GLX-Engine\Physics\Collision\SimpleCollisionShape.cs" />
     <Compile Include="GLX-Engine\Rendering\RenderCore\ECS\RenderComponents.cs" />
+    <Compile Include="GLX-Engine\Rendering\UI\UIOverlay.cs" />
     <Compile Include="GLX-Engine\Utils\BoundsObject.cs" />
     <Compile Include="GLX-Engine\Rendering\Renderables\Canvas.cs" />
     <Compile Include="GLX-Engine\ECS\BasicComponents.cs" />
@@ -120,7 +122,5 @@
     <Compile Include="GLX-Engine\Rendering\RenderCore\Window.cs" />
     <Compile Include="GLX-Engine\Rendering\Renderables\EasyDraw.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GLX-Engine\Rendering\UI\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
