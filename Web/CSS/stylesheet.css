@@ -1,14 +1,14 @@
- @import url("https://use.typekit.net/ndp7ycs.css")
+ @import url("https://use.typekit.net/ndp7ycs.css");
+@import url('style-phone.css') screen and (max-width:992px);
+@import url('style-desktop.css') screen and (min-width:993px);
 *{
     margin: 0;
 	padding: 0;
-    background-color:#ffffff;
     font-family:"forma-djr-display";
 }
 html,body{
     margin: 0;
 	padding: 0;
-    background-color:#ffffff;
     font-family:"forma-djr-display";
 }
 .landingpage header{
@@ -41,47 +41,49 @@ h2{
 }
 nav{
     position:sticky;
+    position: -webkit-sticky;
     top:0;
     background-color:#f9f9f9;
+    text-align:center;
 }
 
 nav ul{
     list-style-type:none;
     overflow:hidden;
-    width:45vw;
     margin:0 auto;
     padding:0;
     border-radius:10px;
+    text-align:center;
 }
 nav li{
-    float:left;
+    display:inline-block;
+    text-align:center;
 }
 nav a{
-    visibility:visible;
+    display:inline-block;
     color:#595959;
     display:block;
     box-sizing:border-box;
-    padding:15px;
     text-align:center;
-    width:15vw;
     text-decoration:none;
     border-radius:10px;
 }
 nav a:hover{
     background-color:#eeeeee;
 }
-nav a:active{
-    padding:11px    ;
-    border:4px solid RGBA(255,255,255,1);;
-}
 h3 {
     font-style:italic;  
     text-align:center;
+    padding:10px;
+    margin:5px;
     border-bottom:2px solid #f9f9f9;;
 }
-
-.description{
-    width:70vw;
+.picturegallery{
+    margin:0 auto;
+    padding:0;
+    text-align:center;
+}
+.description{    
     margin:0 auto;
     padding:1px 30px;
 }
@@ -93,33 +95,29 @@ h3 {
     text-align:left;
 }
 .picturegallery{
-    width:70vw;
-    margin:0 auto;
-    padding:0;
     text-align:center;
 }
 .picturegallery img{
-    width:355px;
     display:inline-block;
     margin:0 auto;
 }
-.shop header{
-    width:70vw;
+.shop header{   
     margin:0 auto;
 }
 .shop article{
-    width:70vw;
     margin:0 auto;
     text-align:center;
 }
 .shopdisplay {
     display:inline-block;
-    width:269px;
-    height:500px;
-    padding:34px;
     background-color:#f9f9f9;
     overflow:hidden;
     text-align:center;
+}
+.shopdisplay h3{
+    text-align:center;
+    font-style:normal;
+    padding:0;
 }
 .shopdisplay ul{
     text-align:left;
@@ -128,8 +126,11 @@ h3 {
     text-align:left;
 }
 .shopdisplay img{
-width:270px;
-display:inline-block;
+    display:inline-block;
+}
+.shopdisplay h1{
+    float:left;
+    font-style:normal;
 }
 .buy a{
     color:#595959;
@@ -143,25 +144,26 @@ display:inline-block;
     background-color:##e7b443;
 }
 .team article{
-    width:70vw;
     margin:0 auto;
     text-align:center;
 }
 .teamdisplay {
     display:inline-block;
-    width:300px;
-    height:400px;
     overflow:hidden;
-    text-align:center;
+}
+.teamdisplay h1{
+    margin:0;
+    padding:0;
 }
 .teamdisplay p{
-    text-align:left;
+    text-align:center;
 }
 .teamdisplay img{
     display:inline-block;
     overflow:hidden;
     box-sizing:border-box;
     width:200px;
+    height:200px;
     border-radius:300px;
     border:1px solid black;
 }
