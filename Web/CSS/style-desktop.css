@@ -1,0 +1,42 @@
+nav ul{
+    width:46vw;
+}
+nav a{
+    font-size:16px;
+    width:15vw;
+    padding:15px;
+}
+nav a:active{
+    padding:11px;
+    border:4px solid #f9f9f9
+}
+.description{
+    width:70vw;
+}
+.picturegallery{
+    width:70vw;
+}
+.picturegallery img{
+    width:355px;
+}
+.shop header{
+    width:70vw;
+}
+.shop article{
+    width:70vw;
+}
+.shopdisplay{   
+    width:269px;
+    height:460px;
+    padding:0 34px 34px;
+}
+.shopdisplay img{
+    width:270px;
+}
+.team article{
+    width:70vw;
+}
+.teamdisplay{
+    width:300px;
+    height:300px;
+}

@@ -1,0 +1,47 @@
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    font-size:24px;
+}
+nav ul{
+    width:90vw;
+}
+nav a{
+    font-size:40px;
+    width:20vw;
+    padding:40px;
+}
+nav a:active{
+    padding:36px;
+    border:4px solid #f9f9f9
+}
+.description{
+    width:85vw;
+}
+.picturegallery img{
+    width:80vw;
+}
+.shop header{
+    width:90vw;
+}
+.shop article{
+    width:90vw;
+}
+.shopdisplay{
+    width:72vw;
+    padding:0 4vw 4vw;
+}
+.shopdisplay img{
+    width:80vwpx;
+}
+.team article{
+    width:90vw;
+}
+.teamdisplay{
+    width:400px;
+    height:300px;
+}
