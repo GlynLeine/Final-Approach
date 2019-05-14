@@ -54,9 +54,9 @@ namespace GLXEngine
             return m_bounds.Overlaps(a_other);
         }
 
-        public bool Overlaps(Shape a_other, out Vector2 o_mtv)
+        public bool Overlaps(Shape a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
-            return m_bounds.Overlaps(a_other, out o_mtv);
+            return m_bounds.Overlaps(a_other, out o_mtv, out o_poi);
         }
 
         public bool Overlaps(BoundsObject a_other)
@@ -64,9 +64,9 @@ namespace GLXEngine
             return m_bounds.Overlaps(a_other.m_bounds);
         }
 
-        public bool Overlaps(BoundsObject a_other, out Vector2 o_mtv)
+        public bool Overlaps(BoundsObject a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
-            return m_bounds.Overlaps(a_other.m_bounds, out o_mtv);
+            return m_bounds.Overlaps(a_other.m_bounds, out o_mtv, out o_poi);
         }
 
         //------------------------------------------------------------------------------------------------------------------------

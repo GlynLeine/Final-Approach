@@ -30,6 +30,21 @@ namespace GLXEngine
             }
         }
 
+        private struct QTInfo
+        {
+            public Collider m_collider;
+            public int m_shapeIndex;
+
+            //------------------------------------------------------------------------------------------------------------------------
+            //														ColliderInfo()
+            //------------------------------------------------------------------------------------------------------------------------
+            public QTInfo(Collider a_collider, int a_shapeIndex)
+            {
+                m_collider = a_collider;
+                m_shapeIndex = a_shapeIndex;
+            }
+        }
+
         private QuadTree m_colliderTree;
         private List<Collider> m_colliderList = new List<Collider>();
         private List<ColliderInfo> m_activeColliderList = new List<ColliderInfo>();
@@ -60,10 +75,13 @@ namespace GLXEngine
             for (int i = 0; i < m_colliderList.Count; i++)
             {
                 Collider collider = m_colliderList[i];
-                foreach (CollisionShape shape in collider.m_shapes)
+                for (int j = 0; j < collider.m_shapes.Count; j++)
                 {
-                    Game.main.UI.Ellipse(shape.ScreenPos().x - 2.5f, shape.ScreenPos().y - 2.5f, 5, 5);
-                    m_colliderTree.Insert(new QuadTree.Point(shape.ScreenPos(), collider));
+                    CollisionShape shape = collider.m_shapes[j];
+                    Game.main.UI.Fill(0, 255, 0);
+                    Game.main.UI.Ellipse(shape.ScreenPos().x - 1.5f, shape.ScreenPos().y - 1.5f, 3, 3);
+                    Game.main.UI.NoFill();
+                    m_colliderTree.Insert(new QuadTree.Point(shape.ScreenPos(), new QTInfo(collider, j)));
                 }
             }
 
@@ -82,10 +100,11 @@ namespace GLXEngine
 
                     if (j >= foundColliders.Count) continue; //fix for removal in loop
 
-                    Collider other = foundColliders[j].data as Collider;
+                    QTInfo otherData = (QTInfo)foundColliders[j].data;
+                    Collider other = otherData.m_collider;
                     if (info.m_collider != other)
                     {
-                        if (info.m_collider.HitTest(ref other))
+                        if (info.m_collider.HitTest(ref other, otherData.m_shapeIndex))
                         {
                             if (info.m_onCollision != null)
                                 info.m_onCollision(other.m_owner, info.m_collider.m_minimumTranslationVec);

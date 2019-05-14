@@ -15,16 +15,25 @@ namespace GLXEngine.Core
             this.radius = radius;
         }
 
+        public override void ApplyForce(Vector2 a_force, Vector2 a_poi, out Vector2 o_correctionTransl, out float o_correctionRot)
+        {
+            a_poi.magnitude = radius;
+            o_correctionTransl = a_force;
+            o_correctionRot = 0;
+        }
+
         //------------------------------------------------------------------------------------------------------------------------
         //														Properties()
         //------------------------------------------------------------------------------------------------------------------------
-        public override bool Contains(Vector2 a_point, out Vector2 o_mtv)
+        public override bool Contains(Vector2 a_point, out Vector2 o_mtv, out Vector2 o_poi)
         {
             o_mtv = new Vector2();
+            o_poi = new Vector2();
             if (Vector2.Distance(position, a_point) <= radius)
             {
                 o_mtv = position - a_point;
                 o_mtv.magnitude = radius - o_mtv.magnitude;
+                o_poi = position-(o_mtv.normal * radius);
                 return true;
             }
             return false;
@@ -40,21 +49,22 @@ namespace GLXEngine.Core
             return radius;
         }
 
-        public override bool Overlaps(Shape a_other, out Vector2 o_mtv)
+        public override bool Overlaps(Shape a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
             o_mtv = new Vector2();
+            o_poi = new Vector2();
             Type otherType = a_other.GetType();
             if (otherType.IsAssignableFrom(typeof(Rectangle)))
             {
-                return Overlaps(a_other as Rectangle, out o_mtv);
+                return Overlaps(a_other as Rectangle, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(Circle)))
             {
-                return Overlaps(a_other as Circle, out o_mtv);
+                return Overlaps(a_other as Circle, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(Line)))
             {
-                return Overlaps(a_other as Line, out o_mtv);
+                return Overlaps(a_other as Line, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(AARectangle)))
             {
@@ -64,24 +74,26 @@ namespace GLXEngine.Core
             return false;
         }
 
-        public bool Overlaps(Line a_other, out Vector2 o_mtv)
+        public bool Overlaps(Line a_other, out Vector2 o_minTranslVec, out Vector2 o_pointOfCollision)
         {
-            o_mtv = new Vector2();
+            o_minTranslVec = new Vector2();
+            o_pointOfCollision = new Vector2();
             position = (position - a_other.start).Rotate(-a_other.rotation);
 
             if (position.x >= 0 && position.x <= a_other.m_length && position.y >= -radius && position.y <= radius)
             {
+                o_pointOfCollision = new Vector2(position.x, 0).Rotate(a_other.rotation) + a_other.start;
                 position = position.Rotate(a_other.rotation) + a_other.start;
                 return true;
             }
 
 
-            if (Contains(new Vector2(), out o_mtv))
+            if (Contains(new Vector2(), out o_minTranslVec, out o_pointOfCollision))
             {
                 position = position.Rotate(a_other.rotation) + a_other.start;
                 return true;
             }
-            else if (Contains(new Vector2(a_other.m_length, 0), out o_mtv))
+            else if (Contains(new Vector2(a_other.m_length, 0), out o_minTranslVec, out o_pointOfCollision))
             {
                 position = position.Rotate(a_other.rotation) + a_other.start;
                 return true;
@@ -90,19 +102,22 @@ namespace GLXEngine.Core
             return false;
         }
 
-        public bool Overlaps(Circle a_other, out Vector2 o_mtv)
+        public bool Overlaps(Circle a_other, out Vector2 o_mtv, out Vector2 o_pointOfCollision)
         {
             o_mtv = new Vector2();
+            o_pointOfCollision = new Vector2();
             if (position.Distance(a_other.position) < radius + a_other.radius)
             {
                 o_mtv = position - a_other.position;
                 o_mtv.magnitude = (radius + a_other.radius) - o_mtv.magnitude;
+
+                o_pointOfCollision = position-(o_mtv.normal * radius);
                 return true;
             }
             return false;
         }
 
-        public bool Overlaps(Rectangle a_other, out Vector2 o_mtv)
+        public bool Overlaps(Rectangle a_other, out Vector2 o_mtv, out Vector2 o_pointOfCollision)
         {
             position = (position - a_other.position).Rotate(-a_other.rotation);
 
@@ -110,7 +125,7 @@ namespace GLXEngine.Core
             Vector2 max = new Vector2(a_other.p_right, a_other.p_bottom);
             Vector2 closestPoint = Vector2.Clamp(position, min, max);
 
-            if (Contains(closestPoint, out o_mtv))
+            if (Contains(closestPoint, out o_mtv, out o_pointOfCollision))
             {
                 position = position.Rotate(a_other.rotation) + a_other.position;
                 return true;
@@ -125,15 +140,15 @@ namespace GLXEngine.Core
             Type otherType = a_other.GetType();
             if (otherType.IsAssignableFrom(typeof(Rectangle)))
             {
-                return Overlaps(a_other as Rectangle, out temp);
+                return Overlaps(a_other as Rectangle, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(Circle)))
             {
-                return Overlaps(a_other as Circle, out temp);
+                return Overlaps(a_other as Circle, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(Line)))
             {
-                return Overlaps(a_other as Line, out temp);
+                return Overlaps(a_other as Line, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(AARectangle)))
             {

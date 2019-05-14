@@ -277,9 +277,71 @@ namespace GLXEngine.Core
             return m_parent.TransformPoint(position);
         }
 
-        public override bool Contains(Vector2 a_point, out Vector2 o_mtv)
+        public override void ApplyForce(Vector2 a_force, Vector2 a_poi, out Vector2 o_correctionTransl, out float o_correctionRot)
+        {
+            Vector2[] hull = p_extends;
+            float[] forceScalars = new float[hull.Length];
+            
+            float poiAngle = (a_poi - m_parent.screenPosition + position).angle;
+            for (int i = 0; i < hull.Length; i++)
+            {
+                hull[i] -= m_parent.screenPosition + position;
+                forceScalars[i] = Mathf.Abs(hull[i].angle - poiAngle);
+
+                //if (forceScalars[i] > 180)
+                //    forceScalars[i] = forceScalars[i] % 180;
+
+                forceScalars[i] = 360 - forceScalars[i];
+            }
+
+            float totalWeight = 0;
+            foreach (float weight in forceScalars)
+                totalWeight += weight;
+
+            for (int i = 0; i < forceScalars.Length; i++)
+                forceScalars[i] /= totalWeight;
+
+            a_force = a_force - m_parent.m_velocity;
+
+            Game.main.UI.Fill(255);
+            Game.main.UI.Text(m_parent.m_velocity.ToString(), 300, 400);
+            Game.main.UI.NoFill();
+
+            Vector2 temp = m_parent.TransformPoint(0, 0);
+            Game.main.UI.Stroke(255);
+            Game.main.UI.Line(temp.x, temp.y, temp.x + a_force.x * 10, temp.y + a_force.y * 10);
+
+            o_correctionRot = float.NegativeInfinity;
+            Vector2[] newHull = new Vector2[hull.Length];
+            for (int i = 0; i < hull.Length; i++)
+            {
+                newHull[i] = hull[i] + a_force * forceScalars[i];
+
+                Vector2 temp1 = hull[i] + m_parent.screenPosition + position;
+                Vector2 temp2 = (hull[i] + a_force * forceScalars[i] * 10) + m_parent.screenPosition + position;
+                Game.main.UI.Stroke(255, 255, 0);
+                Game.main.UI.Line(temp1.x, temp1.y, temp2.x, temp2.y);
+
+
+                if (float.IsInfinity(o_correctionRot))
+                    o_correctionRot = (newHull[i].angle - hull[i].angle);
+                else
+                    o_correctionRot = (o_correctionRot + (newHull[i].angle - hull[i].angle));
+            }
+
+            temp = m_parent.TransformPoint(0, 0);
+            Vector2 temp3 = new Vector2(o_correctionRot);
+            Game.main.UI.Stroke(255, 0, 255);
+            Game.main.UI.Line(temp.x, temp.y, temp.x + temp3.x * 100, temp.y + temp3.y * 100);
+
+            //o_correctionRot = 0;
+            o_correctionTransl = a_force;
+        }
+
+        public override bool Contains(Vector2 a_point, out Vector2 o_mtv, out Vector2 o_poi)
         {
             o_mtv = new Vector2();
+            o_poi = new Vector2();
             a_point = (a_point - position).Rotate(-rotation);
 
             Vector2 topLeft = p_topLeft;
@@ -326,27 +388,28 @@ namespace GLXEngine.Core
             return false;
         }
 
-        public override bool Overlaps(Shape a_other, out Vector2 o_mtv)
+        public override bool Overlaps(Shape a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
             o_mtv = new Vector2();
+            o_poi = new Vector2();
             Type otherType = a_other.GetType();
             if (otherType.IsAssignableFrom(typeof(Rectangle)))
             {
-                return Overlaps(a_other as Rectangle, out o_mtv);
+                return Overlaps(a_other as Rectangle, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(Circle)))
             {
-                return (a_other as Circle).Overlaps(this, out o_mtv);
+                return (a_other as Circle).Overlaps(this, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(Line)))
             {
-                return (a_other as Line).Overlaps(this, out o_mtv);
+                return (a_other as Line).Overlaps(this, out o_mtv, out o_poi);
             }
 
             return false;
         }
 
-        public bool Overlaps(Rectangle a_other, out Vector2 o_mtv)
+        public bool Overlaps(Rectangle a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
             Vector2[] hullA = p_extends;
             Vector2[] hullB = a_other.p_extends;
@@ -362,6 +425,7 @@ namespace GLXEngine.Core
                 rotation -= rotA;
                 a_other.rotation -= rotB;
                 o_mtv = new Vector2();
+                o_poi = new Vector2();
                 if (a_other.p_left <= p_right && a_other.p_right >= p_left && a_other.p_bottom >= p_top && a_other.p_top <= p_bottom)
                 {
                     float mag = a_other.p_left - p_right;
@@ -381,7 +445,11 @@ namespace GLXEngine.Core
                         mag = a_other.p_top - p_bottom;
                     }
                     if (horizontal)
+                    {
                         o_mtv.x = mag;
+                        o_poi = -o_mtv.normal * m_width + position;
+                        o_poi = m_parent.TransformPoint(o_poi);
+                    }
                     else
                         o_mtv.y = mag;
 
@@ -423,7 +491,10 @@ namespace GLXEngine.Core
             #endregion
 
             o_mtv = new Vector2(float.MaxValue, float.MaxValue);
-            //o_poc = null;
+            o_poi = null;
+
+            Vector2 temp = null;
+            bool alessthanb = false;
 
             for (int i = 0; i < axes.Count; i++)
             {
@@ -448,29 +519,47 @@ namespace GLXEngine.Core
                 if (!(minA <= maxB && maxA >= minB))
                 {
                     o_mtv = new Vector2();
+                    o_poi = new Vector2();
                     return false;
                 }
 
-                float overlap = maxA < maxB ? -(maxA - minB) : (maxB - minA);
+                float overlap = maxA < maxB ? -(maxA - minB) : (maxB - minA);//====================================================================================================
                 if (Mathf.Abs(overlap) < o_mtv.magnitude)
                 {
                     o_mtv = axes[i] * overlap;
+
+                    //if (maxA < maxB)
+                    //{
+                    //    if (o_poi == null)
+                    //        o_poi = axes[i] * (maxA + (overlap / 2f));
+                    //    else
+                    //        o_poi = (o_poi + axes[i] * (maxA + (overlap / 2f))) / 2f;
+                    //}
+                    //else
+                    //{
+                    //    if (o_poi == null)
+                    //        o_poi = axes[i] * (-maxA + (overlap / 2f));
+                    //    else
+                    //        o_poi = (o_poi + axes[i] * (-maxA + (overlap / 2f))) / 2f;
+                    //}
                 }
 
-                //if (maxA < maxB)
-                //{
-                //    if (o_poc == null)
-                //    {
-                //        o_poc = axes[i] * (maxA + (overlap / 2f));
-                //    }
-                //    else
-                //    {
-                //        o_poc += axes[i] * (maxA + (overlap / 2f));
-                //        o_poc /= 2f;
-                //    }
-                //}
+                if (o_poi == null)
+                    o_poi = -axes[i] * overlap;
+                else
+                    o_poi = (o_poi - (axes[i] * overlap)) / 2f;
             }
 
+            o_poi = m_parent.TransformPoint(o_poi + position);
+            o_poi = (m_parent.TransformPoint(position) + a_other.m_parent.TransformPoint(a_other.position)) / 2f;
+
+            if (alessthanb)
+                Game.main.UI.Stroke(255, 0, 255);
+            else
+                Game.main.UI.Stroke(255, 0, 0);
+            Game.main.UI.Ellipse(o_poi.x - 2f, o_poi.y - 2f, 4, 4);
+            Game.main.UI.Stroke(255, 255, 0);
+            Game.main.UI.Ellipse(temp.x - 1, temp.y - 1, 2, 2);
             return true;
         }
 
@@ -480,15 +569,15 @@ namespace GLXEngine.Core
             Type otherType = a_other.GetType();
             if (otherType.IsAssignableFrom(typeof(Rectangle)))
             {
-                return Overlaps(a_other as Rectangle, out temp);
+                return Overlaps(a_other as Rectangle, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(Circle)))
             {
-                return (a_other as Circle).Overlaps(this, out temp);
+                return (a_other as Circle).Overlaps(this, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(Line)))
             {
-                return (a_other as Line).Overlaps(this, out temp);
+                return (a_other as Line).Overlaps(this, out temp, out temp);
             }
 
             return false;
