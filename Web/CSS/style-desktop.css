@@ -30,6 +30,10 @@ nav a:active{
     height:460px;
     padding:0 34px 34px;
 }
+.buy{
+    width:269px;
+    bottom:20px;
+}
 .shopdisplay img{
     width:270px;
 }
