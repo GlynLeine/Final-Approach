@@ -31,12 +31,17 @@ nav a:active{
 .shop article{
     width:90vw;
 }
+.buy{
+    width:72vw;
+    height:0px;
+    bottom:40px;
+}
 .shopdisplay{
     width:72vw;
     padding:0 4vw 4vw;
 }
 .shopdisplay img{
-    width:80vwpx;
+    width:40vw;
 }
 .team article{
     width:90vw;
