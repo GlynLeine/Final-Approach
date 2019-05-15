@@ -6,10 +6,8 @@ namespace GameProject
 {
     public class TestPlayer : GameObject
     {
-        const float m_speed = 300;
+        const float m_speed = 100;
         const float m_angularAcceleration = 5f;
-
-        Vector2 m_direction = new Vector2();
 
         Vector2 m_movementDirection = new Vector2();
 
@@ -19,14 +17,14 @@ namespace GameProject
         {
             m_sprite = new Sprite("Textures/Rectangle.png");
             m_sprite.SetOrigin(m_sprite.width / 2, m_sprite.height / 2);
-            m_sprite.rotation += 45;
+            //m_sprite.rotation += 1;
             AddChild(m_sprite);
             Initialise();
         }
 
         protected override Collider createCollider()
         {
-            return new Collider(this, m_sprite);
+            return new Collider(this, m_sprite, true);
         }
 
         public void MoveForward(float a_value, List<int> a_controllerID)
@@ -39,14 +37,9 @@ namespace GameProject
             m_movementDirection.x += a_value;
         }
 
-        public void FaceForward(float a_value, List<int> a_controllerID)
-        {
-            m_direction.y -= a_value;
-        }
-
         public void FaceRight(float a_value, List<int> a_controllerID)
         {
-            m_direction.x += a_value;
+            //rotation += a_value*0.2f;
         }
 
         public void OnCollision(GameObject other, Vector2 a_mtv)
@@ -55,16 +48,12 @@ namespace GameProject
             {
                 game.UI.Stroke(255, 0, 0);
                 game.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + a_mtv.x, screenPosition.y + a_mtv.y);
-                position += a_mtv;
+                //position += a_mtv;
             }
         }
 
         void Update(float a_dt)
         {
-            if (m_direction.sqrMagnitude > 0)
-                rotation = m_direction.angle;
-            m_direction *= 0;
-
             if (m_movementDirection.sqrMagnitude > 0)
             {
                 m_movementDirection.SetMagnitude(m_speed);
@@ -85,6 +74,7 @@ namespace GameProject
         protected override void RenderSelf(GLContext glContext)
         {
             Game.main.UI.Text(position.ToString(), 300, 300);
+            Game.main.UI.Text(m_velocity.ToString(), 300, 350);
         }
     }
 }

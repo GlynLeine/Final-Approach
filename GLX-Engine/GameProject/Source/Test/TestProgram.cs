@@ -10,7 +10,7 @@ namespace GameProject
     {
 
         TestPlayer player;
-        WallTile floor;
+        Wheel wheel;
 
         public TestProgram() : base(1280, 720, false)        // Create a window that's 800x600 and NOT fullscreen
         {
@@ -53,24 +53,23 @@ namespace GameProject
             #endregion
 
             player = new TestPlayer(this);
-            player.SetXY(640, 360);
+            player.SetXY(906.5f, 136.5f);
+            player.rotation += 45;
             AddChild(player);
 
             WallTile wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(650, 296);
+            wall.SetXY(900, 196);
             AddChild(wall);
             wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(650, 360);
+            wall.SetXY(900, 260);
             AddChild(wall);
             wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(650, 424);
+            wall.SetXY(900, 324);
             AddChild(wall);
 
-            floor = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6), width, 50);
-            floor.SetXY(640, 550);
-            floor.SetOrigin(width / 2f, 25);
-            //floor.rotation += 20;
-            AddChild(floor);
+            wheel = new Wheel(this);
+            wheel.SetXY(640, 360);
+            AddChild(wheel);
 
             UI.NoFill();
 
@@ -79,7 +78,7 @@ namespace GameProject
 
         public void FaceRight(float a_value, List<int> a_controllerID)
         {
-            floor.rotation += a_value*0.2f;
+            wheel.rotation += a_value*0.2f;
         }
 
         public void PrintDiagnostics(bool a_pressed)

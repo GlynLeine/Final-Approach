@@ -106,6 +106,7 @@
     <Compile Include="Source\Game\Scenes\ScorePage.cs" />
     <Compile Include="Source\Game\Tools\TiledSceneContructor.cs" />
     <Compile Include="Source\Game\WorldObjects\WallTile.cs" />
+    <Compile Include="Source\Test\Wheel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

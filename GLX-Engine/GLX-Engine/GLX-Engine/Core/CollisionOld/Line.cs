@@ -51,9 +51,10 @@ namespace GLXEngine.Core
             }
         }
 
-        public override bool Contains(Vector2 a_point, out Vector2 o_mtv)
+        public override bool Contains(Vector2 a_point, out Vector2 o_mtv, out Vector2 o_poi)
         {
             o_mtv = new Vector2();
+            o_poi = new Vector2();
             a_point = (a_point - start).Rotate(-rotation);
 
             if (a_point.x >= 0 && a_point.x <= m_length && position.y == 0)
@@ -81,27 +82,28 @@ namespace GLXEngine.Core
             return false;
         }
 
-        public override bool Overlaps(Shape a_other, out Vector2 o_mtv)
+        public override bool Overlaps(Shape a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
             o_mtv = null;
+            o_poi = null;
             Type otherType = a_other.GetType();
             if (otherType.IsAssignableFrom(typeof(Rectangle)))
             {
-                return Overlaps(a_other as Rectangle, out o_mtv);
+                return Overlaps(a_other as Rectangle, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(Circle)))
             {
-                return (a_other as Circle).Overlaps(this, out o_mtv);
+                return (a_other as Circle).Overlaps(this, out o_mtv, out o_poi);
             }
             else if (otherType.IsAssignableFrom(typeof(Line)))
             {
-                return Overlaps(a_other as Line, out o_mtv);
+                return Overlaps(a_other as Line, out o_mtv, out o_poi);
             }
 
             return false;
         }
 
-        public bool Overlaps(Rectangle a_other, out Vector2 o_mtv)
+        public bool Overlaps(Rectangle a_other, out Vector2 o_mtv, out Vector2 o_poi)
         {
             a_other.position = (a_other.position - start).Rotate(-rotation);
 
@@ -109,7 +111,7 @@ namespace GLXEngine.Core
             Vector2 max = new Vector2(m_length, 0);
             Vector2 closestPoint = Vector2.Clamp(a_other.position, min, max);
 
-            if (a_other.Contains(closestPoint, out o_mtv))
+            if (a_other.Contains(closestPoint, out o_mtv, out o_poi))
             {
                 a_other.position = a_other.position.Rotate(rotation) + start;
                 return true;
@@ -148,15 +150,15 @@ namespace GLXEngine.Core
             Type otherType = a_other.GetType();
             if (otherType.IsAssignableFrom(typeof(Rectangle)))
             {
-                return Overlaps(a_other as Rectangle, out temp);
+                return Overlaps(a_other as Rectangle, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(Circle)))
             {
-                return (a_other as Circle).Overlaps(this, out temp);
+                return (a_other as Circle).Overlaps(this, out temp, out temp);
             }
             else if (otherType.IsAssignableFrom(typeof(Line)))
             {
-                return Overlaps(a_other as Line, out temp);
+                return Overlaps(a_other as Line, out temp, out temp);
             }
 
             return false;
@@ -170,6 +172,11 @@ namespace GLXEngine.Core
         public override Vector2 ScreenPos()
         {
             return m_parent.TransformPoint(position);
+        }
+
+        public override void ApplyForce(Vector2 a_force, Vector2 a_poi, out Vector2 o_correctionTransl, out float o_correctionRot)
+        {
+            throw new NotImplementedException();
         }
     }
 }
