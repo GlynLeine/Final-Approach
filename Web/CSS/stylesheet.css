@@ -19,30 +19,27 @@ body{
     height: 100%;
     overflow: auto;
 }
-.landingpage header{
-    background-color:#f9f9f9;
-    padding:10px;
-    text-align:center;
-    border-bottom:2px solid #999999;
+.landingpage{
+    position:relative;
 }
-.landingpage header img{
-    width:100px;
-}
-.video{
-    margin: 0 auto;
-    text-align:center;
-}
-.video img{
+.landingpage img{
     width:100%;
     padding:0;
     margin:0;
     overflow:hidden;
 }
-.video video{
+.landingpage video{
     width:100%;
     padding:0;
     margin:0;
     overflow:hidden;
+}
+.absolute{
+    position:absolute;
+    text-align:center;
+    top:15%;
+    width:52%;
+    left:24%;
 }
 h2{
     font-size:0;
