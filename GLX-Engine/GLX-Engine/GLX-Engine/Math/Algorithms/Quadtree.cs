@@ -45,7 +45,7 @@ namespace GLXEngine
         QuadTree m_southeast;
         QuadTree m_southwest;
 
-        public QuadTree(AARectangle a_boundary, int a_capacity)
+        public QuadTree(AARectangle a_boundary, int a_capacity = 4)
         {
             m_capacity = a_capacity;
             m_boundary = a_boundary;
@@ -69,6 +69,11 @@ namespace GLXEngine
                 m_southeast = new QuadTree(a_source.m_southeast);
                 m_southwest = new QuadTree(a_source.m_southwest);
             }
+        }
+
+        public bool Contains(Point a_point)
+        {
+            return m_allContained.Contains(a_point);
         }
 
         public void SubDivide()
@@ -124,12 +129,12 @@ namespace GLXEngine
               m_southeast.Insert(a_point) || m_southwest.Insert(a_point));
         }
 
-        public List<Point> Query(Shape range, ref List<Point> found, int color)
+        public List<Point> Query(Shape range, ref List<Point> found, int color = 255)
         {
-            Game.main.UI.NoFill();
-            Game.main.UI.Stroke(color, 0, 255 - color);
-            Game.main.UI.StrokeWeight(5);
-            Game.main.UI.Rect(m_boundary.x, m_boundary.y, m_boundary.m_width, m_boundary.m_height);
+            //Game.main.UI.NoFill();
+            //Game.main.UI.Stroke(color, 0, 255 - color);
+            //Game.main.UI.StrokeWeight(5);
+            //Game.main.UI.Rect(m_boundary.x, m_boundary.y, m_boundary.m_width, m_boundary.m_height);
             if (!range.Overlaps(m_boundary))
             {
                 return found;

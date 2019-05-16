@@ -103,6 +103,6 @@ namespace GLXEngine.ECS
             }
         }
 
-        public abstract void Update(float a_dt);
+        public new abstract void Update(float a_dt);
     }
 }

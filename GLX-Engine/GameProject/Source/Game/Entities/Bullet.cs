@@ -28,9 +28,9 @@ namespace GameProject
             return new Collider(this, m_sprite);
         }
 
-        public void OnCollision(GameObject other, Vector2 a_mtv)
+        public void OnCollision(CollisionInfo a_collisionInfo, Vector2 a_minimumTranslationVec, Vector2 a_pointOfImpact)
         {
-            if (other is WallTile)
+            if (a_collisionInfo.m_collider.m_owner is WallTile)
             {
                 Destroy();
             }
@@ -42,7 +42,7 @@ namespace GameProject
             base.OnDestroy();
         }
 
-        public void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (screenPosition.x < -game.width * 0.5f || screenPosition.x > game.width * 1.5f || screenPosition.y < -game.height * 0.5f || screenPosition.y > game.height * 1.5f)
             {

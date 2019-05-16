@@ -5,12 +5,27 @@ using GLXEngine.Core;
 
 namespace GLXEngine
 {
+    public struct CollisionInfo
+    {
+        public Collider m_collider;
+        public int m_shapeIndex;
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //														ColliderInfo()
+        //------------------------------------------------------------------------------------------------------------------------
+        public CollisionInfo(Collider a_collider, int a_shapeIndex)
+        {
+            m_collider = a_collider;
+            m_shapeIndex = a_shapeIndex;
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------------
     //														CollisionManager
     //------------------------------------------------------------------------------------------------------------------------
     public class CollisionManager
     {
-        private delegate void CollisionDelegate(GameObject a_gameObject, Vector2 a_minimumTranslationVec);
+        private delegate void CollisionDelegate(CollisionInfo a_collisionInfo, Vector2 a_minimumTranslationVec, Vector2 a_pointOfImpact);
 
         //------------------------------------------------------------------------------------------------------------------------
         //														ColliderInfo
@@ -27,21 +42,6 @@ namespace GLXEngine
             {
                 m_collider = a_collider;
                 m_onCollision = a_onCollision;
-            }
-        }
-
-        private struct QTInfo
-        {
-            public Collider m_collider;
-            public int m_shapeIndex;
-
-            //------------------------------------------------------------------------------------------------------------------------
-            //														ColliderInfo()
-            //------------------------------------------------------------------------------------------------------------------------
-            public QTInfo(Collider a_collider, int a_shapeIndex)
-            {
-                m_collider = a_collider;
-                m_shapeIndex = a_shapeIndex;
             }
         }
 
@@ -78,10 +78,14 @@ namespace GLXEngine
                 for (int j = 0; j < collider.m_shapes.Count; j++)
                 {
                     CollisionShape shape = collider.m_shapes[j];
-                    Game.main.UI.Fill(0, 255, 0);
-                    Game.main.UI.Ellipse(shape.ScreenPos().x - 1.5f, shape.ScreenPos().y - 1.5f, 3, 3);
-                    Game.main.UI.NoFill();
-                    m_colliderTree.Insert(new QuadTree.Point(shape.ScreenPos(), new QTInfo(collider, j)));
+                    foreach (Vector2 point in shape.GetFindPoints())
+                    {
+                        Game.main.UI.Fill(0, 255, 0);
+                        Game.main.UI.Stroke(0, 255, 0);
+                        Game.main.UI.Ellipse(point.x - 1.5f, point.y - 1.5f, 3, 3);
+                        Game.main.UI.NoFill();
+                        m_colliderTree.Insert(new QuadTree.Point(point, new CollisionInfo(collider, j)));
+                    }
                 }
             }
 
@@ -100,14 +104,14 @@ namespace GLXEngine
 
                     if (j >= foundColliders.Count) continue; //fix for removal in loop
 
-                    QTInfo otherData = (QTInfo)foundColliders[j].data;
+                    CollisionInfo otherData = (CollisionInfo)foundColliders[j].data;
                     Collider other = otherData.m_collider;
                     if (info.m_collider != other)
                     {
                         if (info.m_collider.HitTest(ref other, otherData.m_shapeIndex))
                         {
                             if (info.m_onCollision != null)
-                                info.m_onCollision(other.m_owner, info.m_collider.m_minimumTranslationVec);
+                                info.m_onCollision(otherData, info.m_collider.m_minimumTranslationVec, info.m_collider.m_pointOfImpact);
 
                             info.m_collider.m_minimumTranslationVec = new Vector2();
                         }

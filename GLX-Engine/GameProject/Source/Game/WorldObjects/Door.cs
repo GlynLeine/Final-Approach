@@ -21,7 +21,7 @@ namespace GameProject
             }
         }
 
-        public void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (m_player.m_tags.Contains("Key" + m_ID))
                 Destroy();

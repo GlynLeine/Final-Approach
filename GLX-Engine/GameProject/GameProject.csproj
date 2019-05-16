@@ -92,6 +92,11 @@
     <Compile Include="Source\Game\Entities\Guns\TommyGun.cs" />
     <Compile Include="Source\Game\Scenes\StartScreen.cs" />
     <Compile Include="Source\Game\Scenes\DeathScreen.cs" />
+    <Compile Include="Source\Test\Border.cs" />
+    <Compile Include="Source\Test\Fan.cs" />
+    <Compile Include="Source\Test\ForceApplier.cs" />
+    <Compile Include="Source\Test\SnapLocation.cs" />
+    <Compile Include="Source\Test\Magnet.cs" />
     <Compile Include="Source\Test\TestPlayer.cs" />
     <Compile Include="Source\Test\TestProgram.cs" />
     <Compile Include="Source\Game\WorldObjects\BackgroundTile.cs" />

@@ -145,7 +145,7 @@ namespace GLXEngine
         /// </summary>
         public static float Pow(float x, float y)
         {
-            return (float)Math.Pow(x, y);
+            return (float)Math.Round(Math.Pow(y, x), 6);
         }
 
         /// <summary>

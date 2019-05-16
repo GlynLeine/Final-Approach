@@ -13,10 +13,13 @@ namespace GLXEngine
         private Collider _collider;
 
         protected List<GameObject> m_children = new List<GameObject>();
-        private GameObject _parent = null;
-        protected Scene m_scene = null;
+        private GameObject m_parent = null;
+        public Scene m_scene = null;
 
-        public Vector2 m_velocity = new Vector2(1, 0);
+        public Vector2 m_velocity = new Vector2();
+        public float m_angularVelocity = 0;
+
+        protected MouseHandler m_mouseHandler;
 
         public bool visible = true;
 
@@ -41,17 +44,40 @@ namespace GLXEngine
         public GameObject(Scene a_scene)
         {
             m_scene = a_scene;
+            m_mouseHandler = new MouseHandler(this);
+        }
+
+        public bool p_initialised
+        {
+            get { return m_initialised; }
         }
 
         public void Initialise()
         {
-            if(m_initialised)
+            if (m_initialised)
                 return;
             m_initialised = true;
             _collider = createCollider();
-            if(m_scene != null)
+            if (m_scene != null)
                 m_scene.Add(this);
         }
+
+        public void ReInitialise()
+        {
+            if (!m_initialised)
+                return;
+            m_initialised = true;
+            _collider = createCollider();
+            if (m_scene != null)
+            {
+                m_scene.Remove(this);
+                m_scene.Add(this);
+            }
+        }
+
+        public virtual void Update(float a_dt){ }
+
+        public virtual void OnMouseEvent (GameObject a_target, MouseEventType a_eventType, Vector2 a_mousePos) { }
 
         /// <summary>
         /// Return the collider to use for this game object, null is allowed 
@@ -79,6 +105,26 @@ namespace GLXEngine
                 return parent.m_children.IndexOf(this);
             }
         }
+
+
+        public Vector2 GetScreenVelocity()
+        {
+            if (m_parent != null)
+            {
+                return m_velocity + m_parent.GetScreenVelocity();
+            }
+            return m_velocity;
+        }
+
+        public float GetScreenRotation()
+        {
+            if (m_parent != null)
+            {
+                return rotation + m_parent.GetScreenRotation();
+            }
+            return rotation;
+        }
+        
 
         //------------------------------------------------------------------------------------------------------------------------
         //														collider
@@ -164,7 +210,7 @@ namespace GLXEngine
         /// </param>
         public virtual void Render(GLContext glContext)
         {
-            if(!m_initialised)
+            if (!m_initialised)
                 throw new ApplicationException("This object has not had it's Initialise() function called.");
 
             if (visible)
@@ -200,18 +246,18 @@ namespace GLXEngine
         /// </summary>
         public GameObject parent
         {
-            get { return _parent; }
+            get { return m_parent; }
             set
             {
-                if (_parent != null)
+                if (m_parent != null)
                 {
-                    _parent.removeChild(this);
-                    _parent = null;
+                    m_parent.removeChild(this);
+                    m_parent = null;
                 }
-                _parent = value;
+                m_parent = value;
                 if (value != null)
                 {
-                    _parent.addChild(this);
+                    m_parent.addChild(this);
                 }
             }
         }

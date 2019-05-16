@@ -164,9 +164,9 @@ namespace GLXEngine.Core
             return false;
         }
 
-        public override float GetMaxReach()
+        public override Vector2 GetMaxReach()
         {
-            return m_length / 2f;
+            return new Vector2(Mathf.Max(Mathf.Abs(start.x - x),Mathf.Abs(end.x - x)), Mathf.Max(Mathf.Abs(start.y - y),Mathf.Abs(end.y - y)));
         }
 
         public override Vector2 ScreenPos()
@@ -175,6 +175,11 @@ namespace GLXEngine.Core
         }
 
         public override void ApplyForce(Vector2 a_force, Vector2 a_poi, out Vector2 o_correctionTransl, out float o_correctionRot)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Vector2[] GetFindPoints()
         {
             throw new NotImplementedException();
         }

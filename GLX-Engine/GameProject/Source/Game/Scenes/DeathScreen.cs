@@ -35,7 +35,7 @@ namespace GameProject
             backgroundMusicChannel = backgroundMusic.Play();
         }
 
-        public void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (!m_active)
                 return;

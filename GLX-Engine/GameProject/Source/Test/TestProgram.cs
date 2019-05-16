@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using GLXEngine;								// GLXEngine contains the engine
 using GLXEngine.Core;
+using static GLXEngine.Utils;
 
 namespace GameProject
 {
@@ -12,7 +13,7 @@ namespace GameProject
         TestPlayer player;
         Wheel wheel;
 
-        public TestProgram() : base(1280, 720, false)        // Create a window that's 800x600 and NOT fullscreen
+        public TestProgram() : base(1920, 1080, false)        // Create a window that's 800x600 and NOT fullscreen
         {
             GLContext.clearColor = Color.FromArgb(109, 106, 106);
 
@@ -53,23 +54,50 @@ namespace GameProject
             #endregion
 
             player = new TestPlayer(this);
-            player.SetXY(906.5f, 136.5f);
+            player.SetXY(width - 100, height / 2);
             player.rotation += 45;
             AddChild(player);
 
             WallTile wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(900, 196);
+            wall.SetXY(width / 2 + 260, height / 2 - 164);
             AddChild(wall);
             wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(900, 260);
+            wall.SetXY(width / 2 + 260, height / 2 - 100);
             AddChild(wall);
             wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(900, 324);
+            wall.SetXY(width / 2 + 260, height / 2 - 36);
             AddChild(wall);
 
             wheel = new Wheel(this);
-            wheel.SetXY(640, 360);
+            wheel.SetXY(width / 2, height / 2);
             AddChild(wheel);
+
+            Border border = new Border(this, 0);
+            AddChild(border);
+            border = new Border(this, 1);
+            AddChild(border);
+            border = new Border(this, 2);
+            AddChild(border);
+            border = new Border(this, 3);
+            AddChild(border);
+
+            Fan fan = new Fan(this);
+            fan.SetXY(70, height - 70);
+            AddChild(fan);
+
+            fan = new Fan(this);
+            fan.SetXY(width - 70, height - 70);
+            fan.rotation = 180;
+            AddChild(fan);
+
+            Magnet tmg = new Magnet(this);
+            tmg.SetXY(width / 2, height * 0.6f);
+            tmg.rotation += 90;
+            AddChild(tmg);
+
+            SnapLocation sl = new SnapLocation(this);
+            sl.SetXY(200, 200);
+            AddChild(sl);
 
             UI.NoFill();
 
@@ -78,7 +106,7 @@ namespace GameProject
 
         public void FaceRight(float a_value, List<int> a_controllerID)
         {
-            wheel.rotation += a_value*0.2f;
+            wheel.rotation += a_value * 4;
         }
 
         public void PrintDiagnostics(bool a_pressed)
@@ -104,7 +132,7 @@ namespace GameProject
             base.Step();
         }
 
-        void Update(float a_dt)
+        public override void Update(float a_dt)
         {
         }
 

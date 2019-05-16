@@ -7,6 +7,9 @@ namespace GLXEngine
 	/// </summary>
 	public static class Utils
 	{
+        public const float MAX_COL_WIDTH = 64f;
+
+
 		static private Random random = new Random();
 		
 		//------------------------------------------------------------------------------------------------------------------------

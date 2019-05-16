@@ -12,6 +12,8 @@ namespace GameProject
         {
             m_sprite = a_sprite;
             AddChild(m_sprite);
+            SetOrigin(width/2, height/2);
+
         }
 
         public WallTile(Scene a_scene, Sprite a_sprite, float a_width, float a_height) : base(a_scene, a_width, a_height)
@@ -20,6 +22,8 @@ namespace GameProject
             m_sprite.width = a_width;
             m_sprite.height = a_height;
             AddChild(m_sprite);
+            SetOrigin(a_width/2, a_height/2);
+
         }
 
         protected override Collider createCollider()

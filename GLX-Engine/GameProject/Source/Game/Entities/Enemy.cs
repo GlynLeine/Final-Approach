@@ -68,8 +68,9 @@ namespace GameProject
             return new Collider(this, m_walkAnim);
         }
 
-        public void OnCollision(GameObject other, Vector2 a_mtv)
+        public void OnCollision(CollisionInfo a_collisionInfo, Vector2 a_minimumTranslationVec, Vector2 a_pointOfImpact)
         {
+            GameObject other = a_collisionInfo.m_collider.m_owner;
             if (other is Bullet)
             {
                 Bullet bullet = other as Bullet;
@@ -87,7 +88,7 @@ namespace GameProject
                     m_force += Seperate(new List<Vector2> { other.position + Vector2.RandomFromAngle(normal.angle + 90, normal.angle - 90) }, 100);
                 }
 
-                position += a_mtv;
+                position += a_minimumTranslationVec;
             }
         }
 
@@ -97,7 +98,7 @@ namespace GameProject
             base.OnDestroy();
         }
 
-        public void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (m_hp.current <= 0)
             {

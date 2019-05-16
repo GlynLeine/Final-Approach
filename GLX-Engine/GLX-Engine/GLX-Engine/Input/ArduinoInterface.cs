@@ -92,14 +92,20 @@ public class ArduinoInterface
                 {
                     m_port.Close();
                     try { m_port.Open(); }
+#pragma warning disable CS0168 // Variable is declared but never used
                     catch (System.IO.IOException e) { continue; }
                     catch (UnauthorizedAccessException e) { Console.WriteLine("Not a controller or controller in use by different process"); continue; }
+#pragma warning restore CS0168 // Variable is declared but never used
+
                 }
                 else
                 {
                     try { m_port.Open(); }
+#pragma warning disable CS0168 // Variable is declared but never used
                     catch (System.IO.IOException e) { continue; }
                     catch (UnauthorizedAccessException e) { Console.WriteLine("Not a controller or controller in use by different process"); continue; }
+#pragma warning restore CS0168 // Variable is declared but never used
+
                 }
 
                 m_port.DiscardOutBuffer();
@@ -117,10 +123,9 @@ public class ArduinoInterface
                         handshake = m_port.ReadExisting().Split('\n');
                         accepted = true;
                     }
-                    catch (TimeoutException e)
-                    {
-                        Console.WriteLine("Waiting for response...");
-                    }
+#pragma warning disable CS0168 // Variable is declared but never used
+                    catch (TimeoutException e) { Console.WriteLine("Waiting for response..."); }
+#pragma warning restore CS0168 // Variable is declared but never used
 
                 foreach (String message in handshake)
                     Console.WriteLine(message);
@@ -284,7 +289,9 @@ public class ArduinoInterface
                 m_port.Write(send);
                 return true;
             }
+#pragma warning disable CS0168 // Variable is declared but never used
             catch (System.IO.IOException e)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 Console.WriteLine("Port is non existent.");
                 if (m_found)
@@ -306,7 +313,9 @@ public class ArduinoInterface
         {
 
             try { m_message = m_port.ReadExisting(); }
+#pragma warning disable CS0168 // Variable is declared but never used
             catch (System.IO.IOException e) { m_message = ""; }
+#pragma warning restore CS0168 // Variable is declared but never used
 
             //Split the message into parameters
             m_message.Trim();
@@ -347,12 +356,14 @@ public class ArduinoInterface
 
         if (m_emulation)
         {
+#pragma warning disable CS0162 // Unreachable code detected
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             m_analogs[0] = 0.5f;     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             m_digitals[0] = true;  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             m_closed = false;      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             return true;           ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma warning restore CS0162 // Unreachable code detected     
         }
 
         return false;

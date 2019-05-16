@@ -132,7 +132,7 @@ namespace GameProject
             base.Step();
         }
 
-        void Update(float a_dt)
+        public override void Update(float a_dt)
         {
         }
 

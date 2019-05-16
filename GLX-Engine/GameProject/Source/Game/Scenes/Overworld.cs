@@ -82,7 +82,7 @@ namespace GameProject
             System.Threading.Thread.Sleep(1000);
         }
 
-        public void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (!m_active)
                 return;

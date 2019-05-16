@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GLX-Engine\Core\CollisionOld\AARectangle.cs" />
+    <Compile Include="GLX-Engine\Core\CollisionOld\CollisionDetector.cs" />
     <Compile Include="GLX-Engine\Core\CollisionOld\CollisionShape.cs" />
     <Compile Include="GLX-Engine\Core\CollisionOld\Line.cs" />
     <Compile Include="GLX-Engine\Input\ArduinoInterface.cs" />

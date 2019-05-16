@@ -160,13 +160,13 @@ namespace GameProject
                 m_guns[m_currentGun].SetActive(false);
                 m_currentGun = (m_currentGun + 1) % m_guns.Count;
                 m_guns[m_currentGun].SetActive(true);
-                System.Console.WriteLine("switched");
             }
 
         }
 
-        public void OnCollision(GameObject other, Vector2 a_mtv)
+        public void OnCollision(CollisionInfo a_collisionInfo, Vector2 a_minimumTranslationVec, Vector2 a_pointOfImpact)
         {
+            GameObject other = a_collisionInfo.m_collider.m_owner;
             if (m_hp.current <= 0)
                 return;
 
@@ -187,15 +187,15 @@ namespace GameProject
             }
             else if (!HasChild(other))
             {
-                position += a_mtv;
-                m_movementForce += a_mtv.SetMagnitude(m_speed);
+                position += a_minimumTranslationVec;
+                m_movementForce += a_minimumTranslationVec.SetMagnitude(m_speed);
             }
 
             if(float.IsNaN(position.x))
                 throw new System.Exception();
         }
 
-        void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (m_hp.current <= 0)
             {
@@ -247,8 +247,8 @@ namespace GameProject
             position += m_velocity * a_dt;
             m_dodgeForce *= 0.9f;
 
-            Game.main.UI.StrokeWeight(4);
-            Game.main.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + m_movementForce.x, screenPosition.y + m_movementForce.y);
+            //Game.main.UI.StrokeWeight(4);
+            //Game.main.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + m_movementForce.x, screenPosition.y + m_movementForce.y);
 
             if (m_hp.current > 0)
                 m_movementForce *= 0;
@@ -293,11 +293,7 @@ namespace GameProject
                 //m_canvas.Line(screenPosition.x - percentage / 2, screenPosition.y + m_sprite.height / 2 + 8, screenPosition.x + percentage / 2, screenPosition.y + m_sprite.height / 2 + 8);
             }
 
-            Game.main.UI.Text(position.ToString(), 300, 300);
-            if (position.x > 597)
-            {
-                System.Console.WriteLine("blah");
-            }
+            //Game.main.UI.Text(position.ToString(), 300, 300);
         }
     }
 }

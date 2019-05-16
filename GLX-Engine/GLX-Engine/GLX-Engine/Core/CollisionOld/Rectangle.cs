@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using static GLXEngine.Utils;
 
 namespace GLXEngine.Core
 {
@@ -267,9 +268,10 @@ namespace GLXEngine.Core
         }
         #endregion
 
-        public override float GetMaxReach()
+        public override Vector2 GetMaxReach()
         {
-            return p_topLeftUT.magnitude;
+            Vector2 ret =  p_topLeft - m_parent.TransformPoint(position);
+            return new Vector2(Mathf.Abs(ret.x), Mathf.Abs(ret.y));
         }
 
         public override Vector2 ScreenPos()
@@ -277,21 +279,38 @@ namespace GLXEngine.Core
             return m_parent.TransformPoint(position);
         }
 
+        public override Vector2[] GetFindPoints()
+        {
+            int xSplit = Mathf.Ceiling(m_width / MAX_COL_WIDTH);
+            int ySplit = Mathf.Ceiling(m_height / MAX_COL_WIDTH);
+
+            Vector2[] points = new Vector2[xSplit * ySplit];
+
+            float rWidth = m_width / xSplit;
+            float rHeight = m_height / ySplit;
+
+            for (int i = 0; i < xSplit; i++)
+                for (int j = 0; j < ySplit; j++)
+                    points[(int)(i + j * xSplit)] = m_parent.TransformPoint(position + new Vector2(i * rWidth + rWidth / 2f - m_width / 2f, j * rHeight + rHeight / 2f - m_height / 2f));
+
+            return points;
+        }
+
         public override void ApplyForce(Vector2 a_force, Vector2 a_poi, out Vector2 o_correctionTransl, out float o_correctionRot)
         {
             Vector2[] hull = p_extends;
             float[] forceScalars = new float[hull.Length];
-            
-            float poiAngle = (a_poi - m_parent.screenPosition + position).angle;
+
+            a_poi -= m_parent.screenPosition + position;
+
+            float poiAngle = a_poi.angle;
             for (int i = 0; i < hull.Length; i++)
             {
                 hull[i] -= m_parent.screenPosition + position;
                 forceScalars[i] = Mathf.Abs(hull[i].angle - poiAngle);
-
-                //if (forceScalars[i] > 180)
-                //    forceScalars[i] = forceScalars[i] % 180;
-
-                forceScalars[i] = 360 - forceScalars[i];
+                if (forceScalars[i] > 180)
+                    forceScalars[i] -= 360;
+                forceScalars[i] = 180 - Mathf.Abs(forceScalars[i]);
             }
 
             float totalWeight = 0;
@@ -299,28 +318,62 @@ namespace GLXEngine.Core
                 totalWeight += weight;
 
             for (int i = 0; i < forceScalars.Length; i++)
+            {
+                //Vector2 temp1 = hull[i] + m_parent.screenPosition + position;
+                //Vector2 temp2 = (hull[i] + new Vector2(forceScalars[i] + 90) * 50) + m_parent.screenPosition + position;
+                //Game.main.UI.Stroke(0);
+                //Game.main.UI.StrokeWeight(1);
+                //Game.main.UI.Line(temp1.x, temp1.y, temp2.x, temp2.y);
+                //Vector2 temp4 = (hull[i] + new Vector2(90) * 50) + m_parent.screenPosition + position;
+                //Game.main.UI.Stroke(255);
+                //Game.main.UI.Line(temp1.x, temp1.y, temp4.x, temp4.y);
+                //Game.main.UI.Fill(255, 100);
+
+                //float blah = forceScalars[i];
+                //bool invert = false;
+                //if (blah < 0)
+                //    invert = true;
+
+                //if (invert)
+                //    Game.main.UI.Arc(temp1.x - 25, temp1.y - 25, 50, 50, 90 + blah, -blah);
+                //else
+                //    Game.main.UI.Arc(temp1.x - 25, temp1.y - 25, 50, 50, 90, blah);
+
+                //Game.main.UI.NoFill();
+                //Game.main.UI.StrokeWeight(4);
+
                 forceScalars[i] /= totalWeight;
+            }
 
-            a_force = a_force - m_parent.m_velocity;
+            o_correctionTransl = a_force;
+            a_force -= m_parent.GetScreenVelocity() * Time.deltaTime;
 
-            Game.main.UI.Fill(255);
-            Game.main.UI.Text(m_parent.m_velocity.ToString(), 300, 400);
-            Game.main.UI.NoFill();
+            //Game.main.UI.Fill(255);
+            //Game.main.UI.Text(m_parent.m_velocity.ToString(), 300, 400);
+            //Game.main.UI.NoFill();
 
-            Vector2 temp = m_parent.TransformPoint(0, 0);
-            Game.main.UI.Stroke(255);
-            Game.main.UI.Line(temp.x, temp.y, temp.x + a_force.x * 10, temp.y + a_force.y * 10);
+            //Vector2 temp = m_parent.TransformPoint(0, 0);
+            //Game.main.UI.Stroke(255);
+            //Game.main.UI.Line(temp.x, temp.y, temp.x + a_force.x * 10, temp.y + a_force.y * 10);
 
+            //o_correctionTransl = null;
             o_correctionRot = float.NegativeInfinity;
             Vector2[] newHull = new Vector2[hull.Length];
             for (int i = 0; i < hull.Length; i++)
             {
-                newHull[i] = hull[i] + a_force * forceScalars[i];
+                Vector2 forceApplied = a_force * forceScalars[i];
 
-                Vector2 temp1 = hull[i] + m_parent.screenPosition + position;
-                Vector2 temp2 = (hull[i] + a_force * forceScalars[i] * 10) + m_parent.screenPosition + position;
-                Game.main.UI.Stroke(255, 255, 0);
-                Game.main.UI.Line(temp1.x, temp1.y, temp2.x, temp2.y);
+                //if(o_correctionTransl == null)
+                //    o_correctionTransl = forceApplied;
+                //else if(forceApplied.magnitude > o_correctionTransl.magnitude)
+                //    o_correctionTransl = forceApplied;
+
+                newHull[i] = hull[i] + forceApplied;
+
+                //Vector2 temp1 = hull[i] + m_parent.screenPosition + position;
+                //Vector2 temp2 = (hull[i] + a_force * forceScalars[i] * 10) + m_parent.screenPosition + position;
+                //Game.main.UI.Stroke(255, 255, 0);
+                //Game.main.UI.Line(temp1.x, temp1.y, temp2.x, temp2.y);
 
 
                 if (float.IsInfinity(o_correctionRot))
@@ -329,13 +382,17 @@ namespace GLXEngine.Core
                     o_correctionRot = (o_correctionRot + (newHull[i].angle - hull[i].angle));
             }
 
-            temp = m_parent.TransformPoint(0, 0);
-            Vector2 temp3 = new Vector2(o_correctionRot);
-            Game.main.UI.Stroke(255, 0, 255);
-            Game.main.UI.Line(temp.x, temp.y, temp.x + temp3.x * 100, temp.y + temp3.y * 100);
+            //temp = m_parent.TransformPoint(0, 0);
+            //Vector2 temp3 = new Vector2(o_correctionRot);
+            //Game.main.UI.Stroke(255, 0, 255);
+            //Game.main.UI.Line(temp.x, temp.y, temp.x + temp3.x * 100, temp.y + temp3.y * 100);
 
-            //o_correctionRot = 0;
-            o_correctionTransl = a_force;
+            //Game.main.UI.Stroke(255, 0, 0);
+            //temp = (m_parent.screenPosition + position + a_poi);
+            //Game.main.UI.Ellipse(temp.x - 1.5f, temp.y - 1.5f, 3, 3);
+
+            //o_correctionRot = 0;                    //============================================================================================================================
+            //o_correctionTransl = new Vector2();
         }
 
         public override bool Contains(Vector2 a_point, out Vector2 o_mtv, out Vector2 o_poi)
@@ -370,21 +427,21 @@ namespace GLXEngine.Core
 
         public override bool Contains(Vector2 a_point)
         {
-            Vector2 topLeft = p_topLeft;
-            Vector2 bottomRight = p_bottomRight;
+            Vector2 topLeft = -new Vector2(m_width * 0.5f, m_height * 0.5f);
+            Vector2 bottomRight = new Vector2(m_width * 0.5f, m_height * 0.5f);
 
-            if (rotation % 90 == 0)
-                return (a_point.x >= topLeft.x && a_point.x <= bottomRight.x && a_point.y >= topLeft.y && a_point.y <= bottomRight.y);
+            float angle = rotation + m_parent.GetScreenRotation();
 
-            a_point = (a_point - position).Rotate(-rotation);
+            a_point -= m_parent.TransformPoint(position);
+            a_point.Rotate(-angle);
 
             if (a_point.x >= topLeft.x && a_point.x <= bottomRight.x && a_point.y >= topLeft.y && a_point.y <= bottomRight.y)
             {
-                a_point = a_point.Rotate(rotation) + position;
+                a_point = a_point.Rotate(angle) + position;
                 return true;
             }
 
-            a_point = a_point.Rotate(rotation) + position;
+            a_point = a_point.Rotate(angle) + m_parent.TransformPoint(position);
             return false;
         }
 
@@ -491,11 +548,8 @@ namespace GLXEngine.Core
             #endregion
 
             o_mtv = new Vector2(float.MaxValue, float.MaxValue);
-            o_poi = null;
 
-            Vector2 temp = null;
-            bool alessthanb = false;
-
+            o_poi = (m_parent.TransformPoint(position) + a_other.m_parent.TransformPoint(a_other.position)) / 2f;
             for (int i = 0; i < axes.Count; i++)
             {
                 float minA = float.MaxValue, maxA = float.MinValue, minB = float.MaxValue, maxB = float.MinValue;
@@ -523,43 +577,12 @@ namespace GLXEngine.Core
                     return false;
                 }
 
-                float overlap = maxA < maxB ? -(maxA - minB) : (maxB - minA);//====================================================================================================
+                float overlap = maxA < maxB ? -(maxA - minB) : (maxB - minA);
                 if (Mathf.Abs(overlap) < o_mtv.magnitude)
                 {
                     o_mtv = axes[i] * overlap;
-
-                    //if (maxA < maxB)
-                    //{
-                    //    if (o_poi == null)
-                    //        o_poi = axes[i] * (maxA + (overlap / 2f));
-                    //    else
-                    //        o_poi = (o_poi + axes[i] * (maxA + (overlap / 2f))) / 2f;
-                    //}
-                    //else
-                    //{
-                    //    if (o_poi == null)
-                    //        o_poi = axes[i] * (-maxA + (overlap / 2f));
-                    //    else
-                    //        o_poi = (o_poi + axes[i] * (-maxA + (overlap / 2f))) / 2f;
-                    //}
                 }
-
-                if (o_poi == null)
-                    o_poi = -axes[i] * overlap;
-                else
-                    o_poi = (o_poi - (axes[i] * overlap)) / 2f;
             }
-
-            o_poi = m_parent.TransformPoint(o_poi + position);
-            o_poi = (m_parent.TransformPoint(position) + a_other.m_parent.TransformPoint(a_other.position)) / 2f;
-
-            if (alessthanb)
-                Game.main.UI.Stroke(255, 0, 255);
-            else
-                Game.main.UI.Stroke(255, 0, 0);
-            Game.main.UI.Ellipse(o_poi.x - 2f, o_poi.y - 2f, 4, 4);
-            Game.main.UI.Stroke(255, 255, 0);
-            Game.main.UI.Ellipse(temp.x - 1, temp.y - 1, 2, 2);
             return true;
         }
 

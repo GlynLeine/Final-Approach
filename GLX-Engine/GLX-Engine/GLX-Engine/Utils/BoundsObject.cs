@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GLXEngine.Core;
-
+using static GLXEngine.Utils;
 
 namespace GLXEngine
 {
@@ -20,15 +20,18 @@ namespace GLXEngine
         protected override Collider createCollider()
         {
             List<CollisionShape> collisionShapes = new List<CollisionShape>();
-            int xSplit = Mathf.Ceiling(m_bounds.m_width / 64f);
-            int ySplit = Mathf.Ceiling(m_bounds.m_height / 64f);
+
+            int xSplit = Mathf.Ceiling(m_bounds.m_width / MAX_COL_WIDTH);
+            int ySplit = Mathf.Ceiling(m_bounds.m_height / MAX_COL_WIDTH);
+
+            Vector2[] points = new Vector2[xSplit * ySplit];
 
             float rWidth = m_bounds.m_width / xSplit;
             float rHeight = m_bounds.m_height / ySplit;
 
             for (int i = 0; i < xSplit; i++)
                 for (int j = 0; j < ySplit; j++)
-                    collisionShapes.Add(new Rectangle(i * rWidth + rWidth / 2f - m_bounds.x, j * rHeight + rHeight / 2f - m_bounds.y, rWidth, rHeight, this));
+                    collisionShapes.Add(new Rectangle(i * rWidth + rWidth / 2f - m_bounds.m_width + m_bounds.x, j * rHeight + rHeight / 2f - m_bounds.m_height + m_bounds.y, rWidth, rHeight, this));
 
             return new Collider(this, collisionShapes);
         }

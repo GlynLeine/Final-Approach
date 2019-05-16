@@ -96,8 +96,9 @@ namespace GameProject
             return null;//new BoxCollider(this, new System.Type[] { GetType() });
         }
 
-        public void OnCollision(GameObject other, Vector2 a_mtv)
+        public void OnCollision(CollisionInfo a_collisionInfo, Vector2 a_minimumTranslationVec, Vector2 a_pointOfImpact)
         {
+            GameObject other = a_collisionInfo.m_collider.m_owner;
             if (other is Bullet)
             {
                 if (!((Bullet)other).m_owner.GetType().Equals(m_owner.GetType()))
@@ -117,7 +118,7 @@ namespace GameProject
         public bool IsReloading { get { return m_reloading; } }
         public int ClipSize { get { return m_clipSize; } }
 
-        public void Update(float a_dt)
+        public override void Update(float a_dt)
         {
             if (m_active)
             {

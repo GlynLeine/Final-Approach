@@ -193,11 +193,11 @@ namespace GLXEngine
                     if (bounds[i].y < minY) minY = bounds[i].y;
                 }
 
-                game.UI.Stroke(0);
-                float w = game.UI.pen.Width;
-                game.UI.StrokeWeight(10);
-                game.UI.Rect(game.RenderRange.p_left, game.RenderRange.p_top, game.RenderRange.p_right - game.RenderRange.p_left, game.RenderRange.p_bottom - game.RenderRange.p_top);
-                game.UI.StrokeWeight(w);
+                //game.UI.Stroke(0);
+                //float w = game.UI.pen.Width;
+                //game.UI.StrokeWeight(10);
+                //game.UI.Rect(game.RenderRange.p_left, game.RenderRange.p_top, game.RenderRange.p_right - game.RenderRange.p_left, game.RenderRange.p_bottom - game.RenderRange.p_top);
+                //game.UI.StrokeWeight(w);
 
                 bool test = (maxX < game.RenderRange.p_left) || (maxY < game.RenderRange.p_top) || (minX >= game.RenderRange.p_right) || (minY >= game.RenderRange.p_bottom);
                 if (test == false)
@@ -212,10 +212,6 @@ namespace GLXEngine
                     glContext.SetColor(1, 1, 1, 1);
                     _texture.Unbind();
                     if (blendMode != null) BlendMode.NORMAL.enable();
-                }
-                else
-                {
-                    Console.WriteLine("blah");
                 }
             }
         }

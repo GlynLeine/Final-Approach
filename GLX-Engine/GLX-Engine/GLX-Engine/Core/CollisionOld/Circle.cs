@@ -44,9 +44,26 @@ namespace GLXEngine.Core
             return Vector2.Distance(position, a_point) <= radius;
         }
 
-        public override float GetMaxReach()
+        public override Vector2[] GetFindPoints()
         {
-            return radius;
+            if(radius <= 32)
+                return new Vector2[]{ m_parent.TransformPoint(position)};
+
+            float circumference = Mathf.PI*radius*2;
+            int pointCount = Mathf.Ceiling(circumference/32);
+
+            Vector2[] points = new Vector2[pointCount];
+            for(int i = 0; i < pointCount; i++)
+            {
+                points[i] = m_parent.TransformPoint(position + new Vector2(i*(360/pointCount)));
+            }
+
+            return points;
+        }
+
+        public override Vector2 GetMaxReach()
+        {
+            return new Vector2(radius, radius);
         }
 
         public override bool Overlaps(Shape a_other, out Vector2 o_mtv, out Vector2 o_poi)

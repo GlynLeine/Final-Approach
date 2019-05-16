@@ -5,13 +5,13 @@ using GLXEngine.Collision;
 
 namespace GLXEngine
 {
-    public delegate void CollsionDelegate(Vector2 mtv, Vector2 poi);
+    public delegate void CollisionDelegate(Vector2 mtv, Vector2 poi);
     public class CollisionComponent : ECSComponent
     {
         public SimpleCollisionShape m_simpleCollisionShape;
         public ComplexCollisionShape m_complexCollisionShape;
 
-        public CollsionDelegate m_collisionCommand;
+        public CollisionDelegate m_collisionCommand;
 
         public bool m_useComplex = false;
         public bool m_usePhysics = true;
