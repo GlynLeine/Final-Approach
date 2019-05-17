@@ -178,6 +178,6 @@ h3 {
     overflow:hidden;
     box-sizing:border-box;
     height:200px;
-    border-radius:300px;
+    border-radius:100px;
     border:1px solid black;
 }
