@@ -121,6 +121,11 @@ namespace GLXEngine
             base.OnDestroy();
         }
 
+        public GameController GetController(int a_controllerID)
+        {
+            return m_keyInputHandler.GetController(a_controllerID);
+        }
+
         //------------------------------------------------------------------------------------------------------------------------
         //														Step()
         //------------------------------------------------------------------------------------------------------------------------
