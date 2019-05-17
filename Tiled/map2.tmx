@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="30" height="17" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="42">
+ <tileset firstgid="1" source="Test.tsx"/>
+ <imagelayer id="3" name="Image Layer" offsetx="0" offsety="-1088">
+  <image source="bicktestbackground.png" width="1920" height="3264"/>
+ </imagelayer>
+ <layer id="4" name="Tile Layer" width="30" height="17">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="2" name="object layer">
+  <object id="14" x="704" y="-64" width="256" height="64"/>
+  <object id="15" name="snapbox" type="snapbox" x="832" y="126.67" width="64" height="64"/>
+  <object id="16" name="snapbox" type="snapbox" x="256" y="129.33" width="64" height="64"/>
+  <object id="17" name="snapbox" type="snapbox" x="1409.33" y="126.67" width="64" height="64"/>
+  <object id="18" x="385.333" y="190.67" width="384" height="64"/>
+  <object id="19" x="961.333" y="190.67" width="384" height="64"/>
+  <object id="20" name="conveyorbeltR" type="conveyorbeltR" x="-1.88738e-14" y="449.33" width="512" height="64"/>
+  <object id="21" name="snapbox" type="snapbox" x="1153.33" y="510.67" width="64" height="64"/>
+  <object id="22" name="snapbox" type="snapbox" x="1726.67" y="510.67" width="64" height="64"/>
+  <object id="23" x="1345.33" y="576" width="254.667" height="65.3333"/>
+  <object id="24" name="conveyorbeltR" type="conveyorbeltR" x="514.667" y="701.33" width="573.333" height="65.3333"/>
+  <object id="26" name="conveyorbeltL" type="conveyorbeltL" x="1345.33" y="830.67" width="573.333" height="65.3333"/>
+  <object id="27" name="conveyorbeltR" type="conveyorbeltR" x="2.66667" y="1022.67" width="893.333" height="64"/>
+  <object id="28" name="conveyorbeltL" type="conveyorbeltL" x="1216" y="1024" width="704" height="64"/>
+  <object id="40" name="spawnpoint" type="spawnpoint" x="572.727" y="6.06061" width="81.8182" height="139.394"/>
+  <object id="41" name="goal" type="goal" x="893.939" y="1027.27" width="312.121" height="66.6667"/>
+ </objectgroup>
+</map>

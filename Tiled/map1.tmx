@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="30" height="17" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="42">
+ <tileset firstgid="1" source="Test.tsx"/>
+ <imagelayer id="3" name="Image Layer">
+  <image source="bicktestbackground.png" width="1920" height="3264"/>
+ </imagelayer>
+ <layer id="4" name="Tile Layer" width="30" height="17">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="2" name="object layer">
+  <object id="1" name="conveyorbeltL" type="conveyorbeltL" x="832.97" y="576.727" width="384" height="64"/>
+  <object id="5" name="conveyorbeltR" type="conveyorbeltR" x="1281.61" y="575" width="384" height="64"/>
+  <object id="6" name="spawnpoint" type="spawnpoint" x="1214" y="128" width="64" height="128"/>
+  <object id="8" name="snapbox" type="snapbox" x="890.667" y="253.667" width="64" height="64"/>
+  <object id="9" name="snapbox" type="snapbox" x="1537.33" y="255" width="64" height="64"/>
+  <object id="10" x="1153" y="320" width="192" height="64"/>
+  <object id="12" name="conveyorbeltL" type="conveyorbeltL" x="1345" y="832" width="512" height="64"/>
+  <object id="13" name="conveyorbeltL" type="conveyorbeltL" x="706" y="833" width="384" height="64"/>
+  <object id="14" x="704" y="1024" width="256" height="64"/>
+  <object id="40" name="goal" type="goal" x="452" y="1016" width="252" height="64"/>
+  <object id="41" name="goal" type="goal" x="958" y="1020" width="400" height="64"/>
+ </objectgroup>
+</map>
