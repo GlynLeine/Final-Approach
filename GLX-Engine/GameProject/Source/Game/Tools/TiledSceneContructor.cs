@@ -23,6 +23,8 @@ namespace GameProject
             TileSet tileSet = TiledParser.ReadTileSet(tileSheetFileName);
             List<string> objectTypes = new List<string>();
             tiledObjects.ForEach(tiledObject => { objectTypes.Add(tiledObject.Type); });
+            List<string> objectNames = new List<string>();
+            tiledObjects.ForEach(tiledObject => { objectNames.Add(tiledObject.Name); });
 
             //load background tiles
             for (int i = 0; i < backgroundTiles.GetLength(1); i++)
@@ -63,6 +65,62 @@ namespace GameProject
                     a_scene.m_player.y = tiledObjects[i].Y;
                 }
                 else if (objectTypes[i] == "Collidable")
+                {
+                    BoundsObject obj = new BoundsObject(a_scene, tiledObjects[i].Width, tiledObjects[i].Height);
+                    obj.x = tiledObjects[i].X;
+                    obj.y = tiledObjects[i].Y;
+                    obj.rotation = tiledObjects[i].rotation;
+                    a_scene.AddChild(obj);
+                }
+
+                if (gameObject == null) continue;
+
+                a_scene.AddChild(gameObject);
+                gameObject.x = tiledObjects[i].X;
+                gameObject.y = tiledObjects[i].Y - tileSet.TileHeight;
+            }
+
+            Goal goalObject = new Goal(a_scene);
+
+            for (int i = 0; i < objectNames.Count; i++)
+            {
+                if (objectNames[i] == null) continue;
+
+                GameObject gameObject = null;
+                float rotation = 0;
+
+                if (objectNames[i].IndexOf("Rot") >= 0)
+                {
+                    objectNames[i] = objectNames[i].Substring(3);
+                    if (objectNames[i].Substring(0, 1) == "R")
+                        rotation = 1;
+                    else
+                        rotation = -1;
+
+                    objectNames[i] = objectNames[i].Substring(1);
+                }
+
+                if (objectNames[i] == "magnet")
+                {
+                    Sprite sprite = new Sprite("Textures/key.png");
+                    gameObject = new PickUp(a_scene, sprite, tiledObjects[i].Name);
+                }
+                else if (objectNames[i] == "fan")
+                {
+                    AnimationSprite sprite = new AnimationSprite(tileSet.Image.FileName, tileSet.Columns, tileSet.Rows);
+                    sprite.SetFrame(tiledObjects[i].GID - 1);
+                    gameObject = new Door(a_scene, sprite, a_scene.m_player as Player, tiledObjects[i].GetIntProperty("ID"));                   // conveyorbelt R/L
+                }                                                                                                                               // fan
+                else if (objectNames[i] == "snapbox")
+                {
+
+                }
+                else if (objectNames[i] == "spawnpoint")                                                                                        // magnet
+                {                                                                                                                               // RotR/L prefit for rotational
+                    a_scene.m_player.x = tiledObjects[i].X;                                                                                     // spawnpoint
+                    a_scene.m_player.y = tiledObjects[i].Y;                                                                                     // snapbox
+                }                                                                                                                               // goal
+                else if (objectNames[i] == "-")                                                                                                 // empty boxes = colission
                 {
                     BoundsObject obj = new BoundsObject(a_scene, tiledObjects[i].Width, tiledObjects[i].Height);
                     obj.x = tiledObjects[i].X;

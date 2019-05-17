@@ -85,11 +85,9 @@ namespace GLXEngine
             m_axisMap = new Dictionary<Key, Dictionary<string, float>>();
             m_events = new Dictionary<string, Dictionary<Type, InputEventReference>>();
 
-            foreach (string portName in SerialPort.GetPortNames())
-            {
-                GameController gameController = new GameController(true);
-                m_controllers.Add(gameController.ID, gameController);
-            }
+
+            GameController gameController = new GameController(true);
+            m_controllers.Add(gameController.ID, gameController);
         }
 
         // Handler copy constructor.
@@ -112,6 +110,14 @@ namespace GLXEngine
                 foreach (Key actionMapping in actionEvent.Value)
                     MapEventToKeyAction(actionEvent.Key, actionMapping);
 
+        }
+
+        public GameController GetController(ControllerID a_controllerID)
+        {
+            if (m_controllers.ContainsKey(a_controllerID))
+                return m_controllers[a_controllerID];
+            else
+                return null;
         }
 
         // Retrieve input from all input sources.

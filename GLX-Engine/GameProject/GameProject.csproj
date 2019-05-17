@@ -95,6 +95,7 @@
     <Compile Include="Source\Test\Border.cs" />
     <Compile Include="Source\Test\Fan.cs" />
     <Compile Include="Source\Test\ForceApplier.cs" />
+    <Compile Include="Source\Test\Goal.cs" />
     <Compile Include="Source\Test\SnapLocation.cs" />
     <Compile Include="Source\Test\Magnet.cs" />
     <Compile Include="Source\Test\TestPlayer.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Source\Game\Scenes\ScorePage.cs" />
     <Compile Include="Source\Game\Tools\TiledSceneContructor.cs" />
     <Compile Include="Source\Game\WorldObjects\WallTile.cs" />
+    <Compile Include="Source\Test\TestScene.cs" />
     <Compile Include="Source\Test\Wheel.cs" />
   </ItemGroup>
   <ItemGroup>

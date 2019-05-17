@@ -1,6 +1,7 @@
 using GLXEngine.Core;
 using GLXEngine.Rendering.UI;
 using System;
+using GLXEngine.OpenGL;
 
 namespace GLXEngine
 {

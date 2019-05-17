@@ -50,11 +50,13 @@ namespace GameProject
 
         public void OnCollision(CollisionInfo a_collisionInfo, Vector2 a_minimumTranslationVec, Vector2 a_pointOfImpact)
         {
-            if (!HasChild(a_collisionInfo.m_collider.m_owner))
+            GameObject other = a_collisionInfo.m_collider.m_owner;
+            if (!HasChild(other))
             {
-                //game.UI.Stroke(255, 0, 0);
-                //game.UI.Line(screenPosition.x, screenPosition.y, screenPosition.x + a_mtv.x, screenPosition.y + a_mtv.y);
-                //m_velocity += a_mtv;
+                if(other.GetType() == typeof(Goal))
+                {
+                    Destroy();
+                }
             }
         }
 

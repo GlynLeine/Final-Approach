@@ -307,6 +307,26 @@ public class ArduinoInterface
         return false;
     }
 
+    public bool SendData(int a_output, string data)
+    {
+        return SendString("RECEIVE #" + a_output + " => " + data + ";");
+    }
+
+    public bool SendData(int a_output, int data)
+    {
+        return SendString("RECEIVE #" + a_output + " => " + data + ";");
+    }
+
+    public bool SendData(int a_output, float data)
+    {
+        return SendString("RECEIVE #" + a_output + " => " + data + ";");
+    }
+
+    public bool SendData(int a_output, bool data)
+    {
+        return SendString("RECEIVE #" + a_output + " => " + data + ";");
+    }
+
     protected bool GetData()
     {
         if (SendString("SEND"))
