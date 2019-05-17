@@ -69,7 +69,6 @@
   <object id="10" name="-" x="1153" y="320" width="192" height="64"/>
   <object id="12" name="conveyorbeltL" x="1345" y="832" width="512" height="64"/>
   <object id="13" name="conveyorbeltL" x="706" y="833" width="384" height="64"/>
-  <object id="14" name="-" x="704" y="1024" width="256" height="64"/>
   <object id="15" name="snapbox" x="832" y="1214.67" width="64" height="64"/>
   <object id="16" name="snapbox" x="256" y="1217.33" width="64" height="64"/>
   <object id="17" name="snapbox" x="1409.33" y="1214.67" width="64" height="64"/>
@@ -81,8 +80,6 @@
   <object id="23" name="-" x="1345.33" y="1664" width="254.667" height="65.3333"/>
   <object id="24" name="conveyorbeltR" x="514.667" y="1789.33" width="573.333" height="65.3333"/>
   <object id="26" name="conveyorbeltL" x="1345.33" y="1918.67" width="573.333" height="65.3333"/>
-  <object id="27" name="conveyorbeltR" x="2.66667" y="2110.67" width="893.333" height="64"/>
-  <object id="28" name="conveyorbeltL" x="1216" y="2112" width="704" height="64"/>
   <object id="31" name="RotRConveyorbeltL" x="897.333" y="2364" width="320" height="64"/>
   <object id="32" name="snapbox" x="512" y="2557.33" width="64" height="64"/>
   <object id="33" name="snapbox" x="1533.33" y="2558.67" width="64" height="64"/>
@@ -92,9 +89,9 @@
   <object id="37" name="conveyorbeltR" x="126.667" y="2692" width="1152" height="64" rotation="20"/>
   <object id="38" name="conveyorbeltR" x="1216" y="3134.67" width="704" height="64"/>
   <object id="39" name="goal" x="1854.67" y="3005.33" width="64" height="192"/>
-  <object id="40" name="goal" type="goal" x="2" y="1020" width="1916" height="64"/>
+  <object id="40" name="goal" type="goal" x="6" y="922" width="1916" height="64"/>
   <object id="41" name="spawnpoint" x="460" y="1106" width="72" height="130"/>
-  <object id="43" name="goal" type="goal" x="0" y="2118" width="1916" height="64"/>
+  <object id="43" name="goal" type="goal" x="4" y="2106" width="1916" height="64"/>
   <object id="44" name="spawnpoint" x="1026" y="2223" width="72" height="130"/>
   <object id="45" name="fan" type="fan" x="832" y="6" width="70" height="70"/>
   <object id="46" name="fan" type="fan" x="749" y="7" width="70" height="70"/>
