@@ -93,6 +93,7 @@
     <Compile Include="Source\Game\Scenes\StartScreen.cs" />
     <Compile Include="Source\Game\Scenes\DeathScreen.cs" />
     <Compile Include="Source\Test\Border.cs" />
+    <Compile Include="Source\Test\ConveyerBelt.cs" />
     <Compile Include="Source\Test\Fan.cs" />
     <Compile Include="Source\Test\ForceApplier.cs" />
     <Compile Include="Source\Test\Goal.cs" />

@@ -14,6 +14,21 @@ namespace GLXEngine
 		protected int _cols;
 		protected int _frames;
 		protected int _currentFrame;
+
+        protected float time = 0;
+
+        public float frameTime = 1;
+
+        public override void Update(float a_dt)
+        {
+            time += a_dt;
+            if (time >= frameTime)
+            {
+                time -= frameTime;
+                currentFrame = (currentFrame + 1) % frameCount;
+            }
+        }
+
 		
 		//------------------------------------------------------------------------------------------------------------------------
 		//														AnimSprite()

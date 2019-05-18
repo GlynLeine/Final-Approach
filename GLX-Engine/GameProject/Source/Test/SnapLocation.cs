@@ -14,8 +14,14 @@ namespace GameProject
 
         private QuadTree.Point m_qpoint;
 
+        AnimationSprite m_sprite;
+
         public SnapLocation(Scene a_scene) : base(a_scene)
         {
+            m_sprite = new AnimationSprite("Textures/snap box animation.png", 3, 4, 3*4-2);
+            m_sprite.frameTime = 1f/10f;
+            AddChild(m_sprite);
+
             m_pointTree = new QuadTree(a_scene.RenderRange, 4);
             m_qpoint = new QuadTree.Point(position, this);
             Initialise();

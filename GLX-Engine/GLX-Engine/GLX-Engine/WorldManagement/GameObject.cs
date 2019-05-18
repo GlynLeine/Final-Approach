@@ -20,8 +20,11 @@ namespace GLXEngine
         public float m_angularVelocity = 0;
 
         protected MouseHandler m_mouseHandler;
+        public bool drag = false;
 
         public bool visible = true;
+
+        public float continuousRotation = 0;
 
         private bool m_initialised = false;
 
@@ -225,6 +228,7 @@ namespace GLXEngine
 
                 glContext.PopMatrix();
             }
+            rotation += continuousRotation;
         }
 
         //------------------------------------------------------------------------------------------------------------------------

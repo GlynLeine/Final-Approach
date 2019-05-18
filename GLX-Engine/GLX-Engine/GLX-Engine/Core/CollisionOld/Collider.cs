@@ -175,7 +175,7 @@ namespace GLXEngine.Core
                     if (tempMtv.sqrMagnitude < m_minimumTranslationVec.sqrMagnitude)
                         m_minimumTranslationVec = tempMtv;
 
-                    if (m_hitTest && a_other.m_hitTest)
+                    if (m_hitTest && a_other.m_hitTest && !m_owner.drag && !a_other.m_owner.drag)
                         if (m_usePhysics)
                         {
                             shape.ApplyForce(tempMtv, tempPoi, out Vector2 correctionTransl, out float correctionRot);

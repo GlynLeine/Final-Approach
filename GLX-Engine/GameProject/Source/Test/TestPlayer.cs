@@ -14,11 +14,11 @@ namespace GameProject
 
         public Sprite m_sprite;
 
-        bool drag = false;
+        
 
         public TestPlayer(Scene a_scene) : base(a_scene)
         {
-            m_sprite = new Sprite("Textures/Rectangle.png");
+            m_sprite = new Sprite("Textures/robot64.png");
             m_sprite.SetOrigin(m_sprite.width / 2, m_sprite.height / 2);
             //m_sprite.rotation += 1;
             AddChild(m_sprite);
@@ -30,7 +30,7 @@ namespace GameProject
 
         protected override Collider createCollider()
         {
-            return new Collider(this, m_sprite, true, 0.6f);
+            return new Collider(this, m_sprite, true, 0.5f);
         }
 
         public void MoveForward(float a_value, List<int> a_controllerID)
@@ -130,8 +130,8 @@ namespace GameProject
 
         protected override void RenderSelf(GLContext glContext)
         {
-            Game.main.UI.Text(position.ToString(), 300, 300);
-            Game.main.UI.Text(m_velocity.ToString(), 300, 350);
+            Game.main.UI.Text(position.ToString(), 0, 25);
+            Game.main.UI.Text(m_velocity.ToString(), 0, 50);
         }
     }
 }

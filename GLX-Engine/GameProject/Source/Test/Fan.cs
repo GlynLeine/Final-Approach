@@ -10,11 +10,11 @@ namespace GameProject
 
         float m_reach;
 
-        bool drag;
-
-        public Fan(Scene a_scene) : base(a_scene, new Type[] { typeof(Border), typeof(Magnet), typeof(Fan) })
+        public Fan(Scene a_scene) : base(a_scene, new Type[] { typeof(Border), typeof(Magnet), typeof(Fan), typeof(CollisionDetector) })
         {
-            m_sprite = new Sprite("Textures/Rectangle.png");
+            m_sprite = new Sprite("Textures/fan 2.png");
+            m_sprite.width = 64;
+            m_sprite.height = 64;
             m_sprite.SetOrigin(m_sprite.width / 2, m_sprite.height / 2);
             AddChild(m_sprite);
 
@@ -42,8 +42,6 @@ namespace GameProject
 
         public override void Update(float a_dt)
         {
-            base.Update(a_dt);
-
             if (drag)
             {
                 QuadTree.Point snapPoint = SnapLocation.FindPoint(new Circle(x, y, 32, null));
@@ -71,6 +69,10 @@ namespace GameProject
                     y = Input.mouseY;
                 }
             }
+            else
+            {
+                base.Update(a_dt);
+            }
         }
 
         protected override Collider createCollider()
@@ -82,7 +84,7 @@ namespace GameProject
         {
             Vector2 toMe = screenPosition - a_other.screenPosition;
             float force = Mathf.Pow(Mathf.Max((m_reach - toMe.magnitude), 15f), 2f) / (m_reach * m_reach * 2);
-            return toMe.normal * -Mathf.Min(force, 1f);
+            return toMe.normal * -Mathf.Min(force, 1f)*0.2f;
         }
     }
 }

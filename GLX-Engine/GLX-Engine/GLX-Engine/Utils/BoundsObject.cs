@@ -31,7 +31,7 @@ namespace GLXEngine
 
             for (int i = 0; i < xSplit; i++)
                 for (int j = 0; j < ySplit; j++)
-                    collisionShapes.Add(new Rectangle(i * rWidth + rWidth / 2f - m_bounds.m_width + m_bounds.x, j * rHeight + rHeight / 2f - m_bounds.m_height + m_bounds.y, rWidth, rHeight, this));
+                    collisionShapes.Add(new Rectangle(i * rWidth + rWidth - m_bounds.m_width + m_bounds.x, j * rHeight + rHeight - m_bounds.m_height + m_bounds.y, rWidth, rHeight, this));
 
             return new Collider(this, collisionShapes);
         }

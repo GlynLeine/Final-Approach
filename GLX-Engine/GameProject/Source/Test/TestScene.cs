@@ -1,10 +1,6 @@
 ﻿using GLXEngine.Core;
 using GLXEngine;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.IO;
-using System;
+using static GLXEngine.Utils;
 
 namespace GameProject
 {
@@ -26,24 +22,56 @@ namespace GameProject
         public override void Start()
         {
             #region test shit
+
+            Sprite bkgnd = new Sprite("Textures/bicktestbackground.png");
+            bkgnd.height = Game.main.width / bkgnd.width * bkgnd.height;
+            bkgnd.width = Game.main.width;
+            BackgroundTile bt = new BackgroundTile(this, bkgnd);
+            bt.x = Game.main.width / 2;
+            bt.y = Game.main.height / 2;
+            AddChild(bt);
+
             player = new TestPlayer(this);
-            player.SetXY(width - 100, height / 2);
-            player.rotation += 45;
+            player.SetXY(width / 2, 100);
+            player.rotation += 90;
             AddChild(player);
 
-            WallTile wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(width / 2 + 260, height / 2 - 164);
-            AddChild(wall);
-            wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(width / 2 + 260, height / 2 - 100);
-            AddChild(wall);
-            wall = new WallTile(this, new AnimationSprite("Textures/tileSheet.png", 13, 6));
-            wall.SetXY(width / 2 + 260, height / 2 - 36);
-            AddChild(wall);
+            Sprite wallSprite = new Sprite("Textures/Rectangle.png");
+            WallTile wt = new WallTile(this, wallSprite, 350, 64);
+            wt.SetXY(width / 2, 200);
+            AddChild(wt);
 
-            wheel = new Wheel(this);
-            wheel.SetXY(width / 2, height / 2);
-            AddChild(wheel);
+            SnapLocation sl = new SnapLocation(this);
+            sl.SetXY(512, 150);
+            AddChild(sl);
+
+            Fan fan = new Fan(this);
+            fan.SetXY(width - MAX_COL_WIDTH, MAX_COL_WIDTH);
+            AddChild(fan);
+
+            Magnet tmg = new Magnet(this);
+            tmg.SetXY(width - MAX_COL_WIDTH * 2, MAX_COL_WIDTH);
+            AddChild(tmg);
+
+            ConveyerBelt cb = new ConveyerBelt(this, 320);
+            cb.right = true;
+            cb.SetXY(200, 400);
+            AddChild(cb);
+
+            cb = new ConveyerBelt(this, 320);
+            cb.right = false;
+            cb.SetXY(width - 520, 400);
+            AddChild(cb);
+
+            wallSprite = new Sprite("Textures/Rectangle.png");
+            wt = new WallTile(this, wallSprite, 600, 64);
+            wt.SetXY(width / 2, height - 500);
+            wt.continuousRotation = 10;
+            AddChild(wt);
+
+            Goal goal = new Goal(this);
+            goal.SetXY(width / 2, height);
+            AddChild(goal);
 
             Border border = new Border(this, 0);
             AddChild(border);
@@ -54,36 +82,15 @@ namespace GameProject
             border = new Border(this, 3);
             AddChild(border);
 
-            Fan fan = new Fan(this);
-            fan.SetXY(70, height - 70);
-            AddChild(fan);
-
-            fan = new Fan(this);
-            fan.SetXY(width - 70, height - 70);
-            fan.rotation = 180;
-            AddChild(fan);
-
-            Magnet tmg = new Magnet(this);
-            tmg.SetXY(width / 2, height * 0.6f);
-            tmg.rotation += 90;
-            AddChild(tmg);
-
-            SnapLocation sl = new SnapLocation(this);
-            sl.SetXY(200, 200);
-            AddChild(sl);
-
-            Goal goal = new Goal(this);
-            goal.SetXY(width - 100, height - 200);
-            AddChild(goal);
             #endregion
 
             base.Start();
         }
 
-        public void FaceRight(float a_value, List<int> a_controllerID)
-        {
-            wheel.rotation += a_value * 4;
-        }
+        //public void FaceRight(float a_value, List<int> a_controllerID)
+        //{
+        //    wheel.rotation += a_value * 4;
+        //}
 
         public override void Update(float a_dt)
         {
@@ -100,9 +107,8 @@ namespace GameProject
 
         protected override void OnDestroy()
         {
-            //if (backgroundMusicChannel != null)
-            //    backgroundMusicChannel.Stop();
             base.OnDestroy();
+            Game.main.Restart();
         }
 
         public override void End()

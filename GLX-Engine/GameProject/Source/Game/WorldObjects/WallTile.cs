@@ -1,6 +1,6 @@
 ﻿using GLXEngine;
 using GLXEngine.Core;
-
+using static GLXEngine.Utils;
 
 namespace GameProject
 {
@@ -21,9 +21,9 @@ namespace GameProject
             m_sprite = a_sprite;
             m_sprite.width = a_width;
             m_sprite.height = a_height;
+            m_sprite.SetOrigin(a_width/2, a_height/2);
             AddChild(m_sprite);
-            SetOrigin(a_width/2, a_height/2);
-
+            SetOrigin(a_width/2 + MAX_COL_WIDTH/2, a_height);
         }
 
         protected override Collider createCollider()

@@ -138,7 +138,7 @@ namespace GLXEngine
         public override void Render(GLContext glContext)
         {
             base.Render(glContext);
-            UI.Render(glContext);
+            //UI.Render(glContext);
             if (OnAfterRender != null && recurse)
             {
                 recurse = false;

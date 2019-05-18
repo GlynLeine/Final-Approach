@@ -11,7 +11,9 @@ namespace GameProject
     {
         public TestScene testScene;
 
-        public TestProgram() : base(1920, 1080, false)        // Create a window that's 800x600 and NOT fullscreen
+        public int controller;
+
+        public TestProgram() : base(1920, 1080, true)        // Create a window that's 800x600 and NOT fullscreen
         {
             GLContext.clearColor = Color.FromArgb(109, 106, 106);
 
@@ -50,10 +52,14 @@ namespace GameProject
             m_keyInputHandler.ScanObject(this);
             #endregion
 
+            Sprite logo = new Sprite("Textures/Andorid Assembly Logo.png");
+            logo.SetOrigin(logo.width / 2, logo.height / 2);
+            logo.SetXY(width / 2, height / 2);
+            AddChild(logo);
+
             testScene = new TestScene();
             testScene.m_active = true;
             AddChild(testScene);
-            testScene.Start();
 
             UI.NoFill();
 
@@ -66,10 +72,21 @@ namespace GameProject
         {
             if (!a_pressed)
             {
-                Console.WriteLine(a_controllerID);
+                controller = a_controllerID;
                 GameController gc = GetController(a_controllerID);
                 if (gc != null)
+                {
                     gc.SendData(1, "0");
+                    gc.SendData(2, "93");
+                }
+            }
+        }
+
+        public void StartGame(bool a_pressed, int a_controllerID)
+        {
+            if (!a_pressed)
+            {
+                testScene.Start();
             }
         }
 
@@ -95,6 +112,16 @@ namespace GameProject
         //        AddChild(wall);
         //    }
         //}
+
+        public override void Restart()
+        {
+            GetController(controller).SendData(1, 180);
+            GetController(controller).SendData(2, 93);
+
+            testScene = new TestScene();
+            testScene.m_active = true;
+            AddChild(testScene);
+        }
 
         public override void Step()
         {

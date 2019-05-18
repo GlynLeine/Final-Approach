@@ -145,12 +145,16 @@ namespace GLXEngine
         {
             get
             {
-                if (_texture != null) return Math.Abs(_texture.width * scaleX);
+                if (_texture != null) return Math.Abs(m_bounds.m_width);
                 return 0;
             }
             set
             {
-                if (_texture != null && _texture.width != 0) scaleX = value / _texture.width;
+                if (_texture != null && _texture.width != 0)
+                {
+                    //scaleX = value / _texture.width;
+                    m_bounds.m_width = value;
+                }
             }
         }
 
@@ -164,12 +168,16 @@ namespace GLXEngine
         {
             get
             {
-                if (_texture != null) return Math.Abs(_texture.height * scaleY);
+                if (_texture != null) return Math.Abs(m_bounds.m_height);
                 return 0;
             }
             set
             {
-                if (_texture != null && _texture.height != 0) scaleY = value / _texture.height;
+                if (_texture != null && _texture.height != 0)
+                {
+                    //scaleY = value / _texture.height;
+                    m_bounds.m_height = value;
+                }
             }
         }
 

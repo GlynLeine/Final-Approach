@@ -14,11 +14,11 @@ namespace GameProject
         bool on = true;
         float time = 0;
 
-        bool drag;
-
         public Magnet(Scene a_scene) : base(a_scene, new Type[] { typeof(Border), typeof(Magnet), typeof(Fan) })
         {
-            m_sprite = new Sprite("Textures/Rectangle.png");
+            m_sprite = new Sprite("Textures/Magnet.png");
+            m_sprite.width = 64;
+            m_sprite.height = 64;
             m_sprite.SetOrigin(m_sprite.width / 2, m_sprite.height / 2);
             AddChild(m_sprite);
 
@@ -83,7 +83,10 @@ namespace GameProject
             }
 
             if (time < 1f)
-                base.Update(a_dt);
+            {
+                if (!drag)
+                    base.Update(a_dt);
+            }
             else
                 m_detector.Clear();
 
@@ -108,7 +111,7 @@ namespace GameProject
         {
             Vector2 toMe = screenPosition - a_other.screenPosition;
             float force = Mathf.Pow(Mathf.Max((m_reach - toMe.magnitude), 15f), 2f) / (m_reach * m_reach * 2);
-            return toMe.normal * Mathf.Min(force, 1f) * 2;
+            return toMe.normal * Mathf.Min(force, 1f)*0.4f;
         }
     }
 }

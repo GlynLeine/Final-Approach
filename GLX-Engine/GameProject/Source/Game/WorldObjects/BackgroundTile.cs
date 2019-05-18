@@ -12,6 +12,7 @@ namespace GameProject
             m_sprite = a_sprite;
             m_sprite.SetOrigin(m_sprite.width / 2, m_sprite.height / 2);
             AddChild(m_sprite);
+            Initialise();
         }
 
         protected override Collider createCollider()
